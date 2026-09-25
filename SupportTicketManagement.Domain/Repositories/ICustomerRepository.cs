@@ -1,6 +1,6 @@
 ﻿using SupportTicketManagement.Domain.Models;
 
-namespace SupportTicketManagement.Application.Repositories;
+namespace SupportTicketManagement.Domain.Repositories;
 
 public interface ICustomerRepository
 {
