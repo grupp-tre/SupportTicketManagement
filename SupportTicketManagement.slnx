@@ -4,6 +4,9 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Project Path="SupportTicketManagement.Application/SupportTicketManagement.Application.csproj" />
+  <Project Path="SupportTicketManagement.Domain/SupportTicketManagement.Domain.csproj" />
+  <Project Path="SupportTicketManagement.Infrastructure/SupportTicketManagement.Infrastructure.csproj" />
   <Project Path="SupportTicketManagement.Presentation/SupportTicketManagement.Presentation.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
