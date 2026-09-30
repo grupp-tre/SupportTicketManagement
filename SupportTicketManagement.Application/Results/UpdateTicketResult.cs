@@ -1,5 +1,10 @@
-﻿namespace SupportTicketManagement.Application.Results;
+﻿using SupportTicketManagement.Domain.Models;
 
-public class UpdateTicketResult
-{
-}
+namespace SupportTicketManagement.Application.Results;
+
+public record UpdateTicketResult
+(
+    bool Success,
+    string? Message,
+    Ticket? Ticket 
+);

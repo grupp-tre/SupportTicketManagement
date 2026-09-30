@@ -5,7 +5,8 @@ namespace SupportTicketManagement.Application.Services;
 
 public interface ITicketService
 {
-    Task<AddTicketResult> AddTicket(AddTicketRequest addTicketRequest);
-    Task<GetAllTicketsResult> GetAllTickets();
-    Task<UpdateTicketResult> UpdateTicket(UpdateTicketRequest updateTicketRequest);
+    Task<AddTicketResult> AddTicketAsync(AddTicketRequest addTicketRequest);
+    Task<GetAllTicketsResult> GetAllTicketsAsync();
+    Task<UpdateTicketResult> UpdateTicketAsync(UpdateTicketRequest updateTicketRequest);
+    Task<AddTicketCommentResult> AddTicketCommentAsync(AddTicketCommentRequest addTicketCommentRequest);
 }
