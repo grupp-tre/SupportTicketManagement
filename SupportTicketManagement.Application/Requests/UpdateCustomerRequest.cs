@@ -1,5 +1,12 @@
 ﻿namespace SupportTicketManagement.Application.Requests;
 
-public class UpdateCustomerRequest
-{
-}
+public record UpdateCustomerRequest
+
+(
+
+    Guid CustomerId,
+
+    string CustomerName,
+
+    string EmailAddress
+);

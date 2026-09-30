@@ -1,5 +1,10 @@
 ﻿namespace SupportTicketManagement.Application.Requests;
 
-public class AddCustomerRequest
-{
-}
+public record AddCustomerRequest
+(
+    string CustomerName,
+
+    string EmailAddress
+);
+
+

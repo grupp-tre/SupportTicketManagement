@@ -1,5 +1,13 @@
-﻿namespace SupportTicketManagement.Application.Results;
+﻿using SupportTicketManagement.Domain.Models;
 
-public class UpdateCustomerResult
-{
-}
+namespace SupportTicketManagement.Application.Results;
+
+public record UpdateCustomerResult
+
+(
+  bool Succeeded,
+
+  Customer? Customer,
+
+  string? ErrorMessage
+);

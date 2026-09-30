@@ -1,5 +1,14 @@
-﻿namespace SupportTicketManagement.Application.Results;
+﻿using SupportTicketManagement.Domain.Models;
 
-public class AddCustomerResult
-{
-}
+namespace SupportTicketManagement.Application.Results;
+
+public record AddCustomerResult
+
+( 
+    bool Succeeded,
+
+    Customer? Customer,
+
+    string? ErrorMessage
+
+);

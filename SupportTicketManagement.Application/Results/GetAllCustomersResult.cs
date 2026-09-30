@@ -1,5 +1,14 @@
-﻿namespace SupportTicketManagement.Application.Results;
+﻿using SupportTicketManagement.Domain.Models;
 
-public class GetAllCustomersResult
-{
-}
+namespace SupportTicketManagement.Application.Results;
+
+public record GetAllCustomersResult
+
+(
+
+    bool Succeeded,
+
+    IReadOnlyList<Customer> Customers,
+
+    string? ErrorMessage
+);
