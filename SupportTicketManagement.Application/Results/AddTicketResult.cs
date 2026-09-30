@@ -5,6 +5,6 @@ namespace SupportTicketManagement.Application.Results;
 public record AddTicketResult
 (
     bool Success, 
-    string? Message,
-    Ticket? Ticket
+    Ticket? Ticket,
+    string? ErrorMessage
 );
