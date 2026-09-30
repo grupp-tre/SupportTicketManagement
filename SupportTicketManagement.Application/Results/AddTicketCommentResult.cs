@@ -3,5 +3,5 @@
 public record AddTicketCommentResult
 (
     bool Success,
-    string? Message
+    string? ErrorMessage
 );

@@ -5,7 +5,7 @@ using SupportTicketManagement.Domain.Repositories;
 
 namespace SupportTicketManagement.Application.Services;
 
-public class TicketService(ITicketRepository ticketRepository) : ITicketService
+public class TicketService(ITicketRepository ticketRepository, IAdminService adminService) : ITicketService
 {
     public async Task<AddTicketResult> AddTicketAsync(AddTicketRequest request)
     {
@@ -17,55 +17,67 @@ public class TicketService(ITicketRepository ticketRepository) : ITicketService
         throw new NotImplementedException();
     }
 
+    public async Task<GetTicketByIdResult> GetTicketByIdAsync(Guid id)
+    {
+        var ticket = await ticketRepository.GetById(id);
+
+        if (ticket is null)
+            return new GetTicketByIdResult(false, null, $"Could not find ticket with Id: '{id}'.");
+
+        return new GetTicketByIdResult(true, ticket, null);
+    }
+
     public async Task<UpdateTicketResult> UpdateTicketAsync(UpdateTicketRequest request)
     {
-        try
-        {
-            Ticket ticket = await GetTicketByIdAsync(request.Id);
+        GetTicketByIdResult result = await GetTicketByIdAsync(request.Id);
 
-            ticket.Title = request.Title;
-            ticket.Description = request.Description;
+        if (!result.Success || result.Ticket is null)
+            return new UpdateTicketResult(false, null, result.ErrorMessage);
+
+        Ticket ticket = result.Ticket;
+
+        ticket.Title = request.Title;
+        ticket.Description = request.Description;
+        if (ticket.AdministratorId != request.AdministratorId)
+        {
+            if (request.AdministratorId is not null && !await adminService.AdminExistsAsync(request.AdministratorId.Value))
+                throw new KeyNotFoundException($"Could not find admin with Id: '{request.AdministratorId}'.");
+
             ticket.AdministratorId = request.AdministratorId;
-            ticket.Priority = request.Priority;
-            ticket.Status = request.Status;
-
-            await ticketRepository.Update(ticket);
-
-            return new UpdateTicketResult(true, null, ticket);
         }
-        catch (Exception ex)
-        {
-            return new UpdateTicketResult(false, ex.Message, null);
-        }
+        ticket.Priority = request.Priority;
+        ticket.Status = request.Status;
+
+        await ticketRepository.Update(ticket);
+
+        return new UpdateTicketResult(true, ticket, null);
     }
 
     public async Task<AddTicketCommentResult> AddTicketCommentAsync(AddTicketCommentRequest request)
     {
+        TicketComment ticketComment;
+
         try
         {
-            TicketComment ticketComment = CreateTicketComment(request.Comment);
-            Ticket ticket = await GetTicketByIdAsync(request.TicketId);
-
-            ticket.Comments.Add(ticketComment);
-
-            await ticketRepository.Update(ticket);
-
-            return new AddTicketCommentResult(true, null);
+            ticketComment = CreateTicketComment(request.Comment);
         }
         catch (Exception ex)
         {
             return new AddTicketCommentResult(false, ex.Message); 
         }
-    }
 
-    private async Task<Ticket> GetTicketByIdAsync(Guid id)
-    {
-        var ticket = await ticketRepository.GetById(id);
+        GetTicketByIdResult result = await GetTicketByIdAsync(request.TicketId);
 
-        if (ticket is null)
-            throw new KeyNotFoundException($"Could not find ticket with Id: '{id}'");
+        if (!result.Success || result.Ticket is null)
+            return new AddTicketCommentResult(false, result.ErrorMessage);
 
-        return ticket;
+        Ticket ticket = result.Ticket;
+
+        ticket.Comments.Add(ticketComment);
+
+        await ticketRepository.Update(ticket);
+
+        return new AddTicketCommentResult(true, null);
     }
 
     private static TicketComment CreateTicketComment(string commentText)
