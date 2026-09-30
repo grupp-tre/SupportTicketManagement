@@ -5,6 +5,7 @@ namespace SupportTicketManagement.Domain.Repositories;
 public interface ITicketRepository
 {
     Task<bool> Create(Ticket ticket);
-    Task<IReadOnlyList<Ticket>> GetAll();
+    Task<Ticket?> GetById(Guid id);
+    Task<List<Ticket>> GetAll();
     Task<bool> Update(Ticket ticket);
 }

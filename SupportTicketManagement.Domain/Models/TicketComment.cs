@@ -1,9 +1,8 @@
 ﻿namespace SupportTicketManagement.Domain.Models;
 
-public class TicketComment
+public class TicketComment(Guid id, string text, DateTimeOffset createdAt)
 {
-    Guid Id { get; set; }
-    string Text { get; set; } = string.Empty;
-    DateTimeOffset CreatedAt { get; set; }
-    Guid AuthorId { get; set; }
+    Guid Id { get; set; } = id;
+    string Text { get; set; } = text;
+    DateTimeOffset CreatedAt { get; set; } = createdAt;
 }

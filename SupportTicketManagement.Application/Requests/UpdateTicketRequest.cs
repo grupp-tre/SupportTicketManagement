@@ -1,5 +1,18 @@
-﻿namespace SupportTicketManagement.Application.Requests;
+﻿using SupportTicketManagement.Domain.Enums;
 
-public class UpdateTicketRequest
-{
-}
+namespace SupportTicketManagement.Application.Requests;
+
+public record UpdateTicketRequest
+(
+    Guid Id,
+
+    string Title, 
+
+    string Description, 
+
+    Guid? AdministratorId, 
+
+    TicketPriority Priority, 
+
+    TicketStatus Status 
+);

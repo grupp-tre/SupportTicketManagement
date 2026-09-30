@@ -1,5 +1,11 @@
-﻿namespace SupportTicketManagement.Application.Requests;
+﻿using SupportTicketManagement.Domain.Enums;
 
-public class AddTicketRequest
-{
-}
+namespace SupportTicketManagement.Application.Requests;
+
+public record AddTicketRequest
+(
+    string Title, 
+    string Description, 
+    Guid CustomerId, 
+    TicketPriority Priority
+);

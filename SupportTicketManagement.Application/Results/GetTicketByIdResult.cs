@@ -2,9 +2,9 @@
 
 namespace SupportTicketManagement.Application.Results;
 
-public record AddTicketResult
+public record GetTicketByIdResult
 (
-    bool Success, 
+    bool Success,
     Ticket? Ticket,
     string? ErrorMessage
 );

@@ -2,9 +2,9 @@
 
 namespace SupportTicketManagement.Application.Results;
 
-public record AddTicketResult
+public record GetAllAdminsResult
 (
-    bool Success, 
-    Ticket? Ticket,
+    bool Success,
+    IReadOnlyList<Admin> Admins,
     string? ErrorMessage
 );

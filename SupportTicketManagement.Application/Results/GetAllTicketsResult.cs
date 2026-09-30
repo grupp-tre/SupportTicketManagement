@@ -1,5 +1,5 @@
 ﻿namespace SupportTicketManagement.Application.Results;
 
-public class GetAllTicketsResult
-{
-}
+public record GetAllTicketsResult
+(
+);
