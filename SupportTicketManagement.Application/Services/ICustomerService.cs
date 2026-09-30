@@ -5,7 +5,7 @@ namespace SupportTicketManagement.Application.Services;
 
 public interface ICustomerService
 {
-    Task<AddCustomerResult> AddCustomer(AddCustomerRequest addCustomerRequest);
-    Task<GetAllCustomersResult> GetAllCustomers();
-    Task<UpdateCustomerResult> UpdateCustomer(UpdateCustomerRequest updateCustomerRequest);
+    Task<AddCustomerResult> AddCustomerAsync(AddCustomerRequest addCustomerRequest);
+    Task<GetAllCustomersResult> GetAllCustomersAsync();
+    Task<UpdateCustomerResult> UpdateCustomerAsync(UpdateCustomerRequest updateCustomerRequest);
 }

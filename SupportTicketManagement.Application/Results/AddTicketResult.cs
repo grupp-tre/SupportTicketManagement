@@ -2,9 +2,9 @@
 
 namespace SupportTicketManagement.Application.Results;
 
-public class AddTicketResult
-{
-    public bool Success { get; set; }
-    public string Message { get; set; } = string.Empty;
-    public Ticket? Ticket { get; set; }
-}
+public record AddTicketResult
+(
+    bool Success, 
+    string? Message,
+    Ticket? Ticket
+);
