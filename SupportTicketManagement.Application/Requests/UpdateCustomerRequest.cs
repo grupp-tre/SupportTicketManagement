@@ -1,5 +1,5 @@
 ﻿namespace SupportTicketManagement.Application.Requests;
 
-public class UpdateCustomerRequest
-{
-}
+public record UpdateCustomerRequest
+(
+);

@@ -1,5 +1,5 @@
 ﻿namespace SupportTicketManagement.Application.Results;
 
-public class UpdateCustomerResult
-{
-}
+public record UpdateCustomerResult
+(
+);
