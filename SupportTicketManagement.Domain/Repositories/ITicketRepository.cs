@@ -6,6 +6,6 @@ public interface ITicketRepository
 {
     Task<bool> Create(Ticket ticket);
     Task<Ticket?> GetById(Guid id);
-    Task<IReadOnlyList<Ticket>> GetAll();
+    Task<List<Ticket>> GetAll();
     Task<bool> Update(Ticket ticket);
 }
