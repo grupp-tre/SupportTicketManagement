@@ -3,12 +3,8 @@
 namespace SupportTicketManagement.Application.Results;
 
 public record AddCustomerResult
-
 ( 
     bool Succeeded,
-
     Customer? Customer,
-
     string? ErrorMessage
-
 );

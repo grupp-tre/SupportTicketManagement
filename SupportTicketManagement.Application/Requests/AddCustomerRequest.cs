@@ -3,7 +3,6 @@
 public record AddCustomerRequest
 (
     string CustomerName,
-
     string EmailAddress
 );
 
