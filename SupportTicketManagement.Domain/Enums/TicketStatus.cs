@@ -3,6 +3,6 @@
 public enum TicketStatus
 {
     New,
-    Ongoing,
+    InProgress,
     Solved
 }
