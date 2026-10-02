@@ -4,7 +4,7 @@ namespace SupportTicketManagement.Application.Results;
 
 public record GetAllAdminsResult
 (
-    bool Success,
+    bool Succeeded,
     IReadOnlyList<Admin> Admins,
     string? ErrorMessage
 );

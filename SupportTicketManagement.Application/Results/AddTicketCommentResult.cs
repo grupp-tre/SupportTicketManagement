@@ -2,6 +2,6 @@
 
 public record AddTicketCommentResult
 (
-    bool Success,
+    bool Succeeded,
     string? ErrorMessage
 );
