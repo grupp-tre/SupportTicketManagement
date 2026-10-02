@@ -14,7 +14,28 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 
     public async Task<GetAllTicketsResult> GetAllTicketsAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            List<Ticket> tickets = await ticketRepository.GetAll();
+
+            List<Ticket> sortedTickets = tickets
+                .OrderByDescending(t => t.CreatedAt)
+                .ToList();
+
+            return new GetAllTicketsResult(true, sortedTickets, null);
+        }
+        catch (System.IO.IOException)
+        {
+            return new GetAllTicketsResult(false, [], "Could not read the ticket file.");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return new GetAllTicketsResult(false, [], "You do not have permission to read the ticket file.");
+        }
+        catch (System.Text.Json.JsonException)
+        {
+            return new GetAllTicketsResult(false, [], "The ticket file contains invalid JSON.");
+        }
     }
 
     public async Task<GetTicketByIdResult> GetTicketByIdAsync(Guid id)
