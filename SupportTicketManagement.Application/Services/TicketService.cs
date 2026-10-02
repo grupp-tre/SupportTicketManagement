@@ -1,5 +1,6 @@
 ﻿using SupportTicketManagement.Application.Requests;
 using SupportTicketManagement.Application.Results;
+using SupportTicketManagement.Domain.Enums;
 using SupportTicketManagement.Domain.Models;
 using SupportTicketManagement.Domain.Repositories;
 
@@ -115,5 +116,40 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
             commentText,
             createdAt
         );
+    }
+
+    public async Task<GetAllTicketsResult> SearchTicketsAsync(SearchTicketRequest request)
+    {
+        if (request.Status.HasValue && !Enum.IsDefined(typeof(TicketStatus), request.Status.Value))
+        {
+            return new GetAllTicketsResult(false, [], "Invalid ticket filter.");
+        }
+
+        var result = await GetAllTicketsAsync();
+
+        if (!result.Success)
+        {
+            return result;
+        }
+
+        string searchText = request.SearchText?.Trim() ?? string.Empty;
+        List<Ticket> matchingTickets = [];
+
+        foreach (var ticket in result.Tickets)
+        {
+            bool matchesSearchTitle = ticket.Title.Contains(
+                searchText,
+                StringComparison.OrdinalIgnoreCase);
+
+            bool matchesStatus =
+                request.Status is null || ticket.Status == request.Status.Value;
+
+            if (matchesSearchTitle && matchesStatus)
+            {
+                matchingTickets.Add(ticket);
+            }
+        }
+
+        return new GetAllTicketsResult(true, matchingTickets, null);
     }
 }
