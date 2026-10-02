@@ -31,24 +31,34 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
     {
         GetTicketByIdResult result = await GetTicketByIdAsync(request.Id);
 
-        if (!result.Success || result.Ticket is null)
+        if (!result.Succeeded || result.Ticket is null)
             return new UpdateTicketResult(false, null, result.ErrorMessage);
 
         Ticket ticket = result.Ticket;
 
-        ticket.Title = request.Title;
-        ticket.Description = request.Description;
-        if (ticket.AdministratorId != request.AdministratorId)
+        try
         {
-            if (request.AdministratorId is not null && !await adminService.AdminExistsAsync(request.AdministratorId.Value))
-                throw new KeyNotFoundException($"Could not find admin with Id: '{request.AdministratorId}'.");
+            if (ticket.Title != request.Title)
+                ticket.SetTitle(request.Title);
 
-            ticket.AdministratorId = request.AdministratorId;
+            if (ticket.Description != request.Description)
+                ticket.SetDescription(request.Description);
+
+            if (ticket.AdminId != request.AdminId)
+                await SetAdminId(request.AdminId, ticket);
+
+            if (ticket.Priority != request.Priority)
+                ticket.SetPriority(request.Priority);
+
+            if (ticket.Status != request.Status)
+                ticket.SetStatus(request.Status);
+
+            await ticketRepository.Update(ticket);
         }
-        ticket.Priority = request.Priority;
-        ticket.Status = request.Status;
-
-        await ticketRepository.Update(ticket);
+        catch (Exception ex)
+        {
+            return new UpdateTicketResult(false, null, ex.Message);
+        }
 
         return new UpdateTicketResult(true, ticket, null);
     }
@@ -68,12 +78,12 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 
         GetTicketByIdResult result = await GetTicketByIdAsync(request.TicketId);
 
-        if (!result.Success || result.Ticket is null)
+        if (!result.Succeeded || result.Ticket is null)
             return new AddTicketCommentResult(false, result.ErrorMessage);
 
         Ticket ticket = result.Ticket;
 
-        ticket.Comments.Add(ticketComment);
+        ticket.AddComment(ticketComment);
 
         await ticketRepository.Update(ticket);
 
@@ -86,13 +96,15 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
             throw new ArgumentException("A comment can not be empty.");
 
         Guid ticketId = Guid.NewGuid();
-        DateTimeOffset createdAt = DateTimeOffset.UtcNow;
 
-        return new TicketComment
-        (
-            ticketId,
-            commentText,
-            createdAt
-        );
+        return new TicketComment(ticketId, commentText);
+    }
+
+    private async Task SetAdminId(Guid? adminId, Ticket ticket)
+    {
+        if (adminId is not null && !await adminService.AdminExistsAsync(adminId.Value))
+            throw new KeyNotFoundException($"Could not find admin with Id: '{adminId}'.");
+
+        ticket.SetAdminId(adminId);
     }
 }
