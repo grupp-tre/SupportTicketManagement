@@ -11,4 +11,6 @@ public interface ITicketService
     Task<UpdateTicketResult> UpdateTicketAsync(UpdateTicketRequest updateTicketRequest);
     Task<AddTicketCommentResult> AddTicketCommentAsync(AddTicketCommentRequest addTicketCommentRequest);
     Task<GetAllTicketsResult> SearchTicketsAsync(SearchTicketRequest request);
+    Task<TicketSummaryResult> GetTicketSummaryAsync();
+
 }

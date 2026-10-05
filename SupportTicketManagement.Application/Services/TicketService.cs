@@ -152,4 +152,40 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 
         return new GetAllTicketsResult(true, matchingTickets, null);
     }
+    public async Task<TicketSummaryResult> GetTicketSummaryAsync()
+    {
+        var result = await GetAllTicketsAsync();
+        
+        if (!result.Success)
+        {
+            return new TicketSummaryResult(false, 0, 0, 0, result.ErrorMessage);
+        }
+
+        int newCount = 0;
+        int ongoingCount = 0;
+        int solvedCount = 0;
+
+        foreach (var ticket in result.Tickets)
+        {
+            switch (ticket.Status)
+            {
+                case TicketStatus.New:
+                    newCount++;
+                    break;
+                case TicketStatus.Ongoing:
+                    ongoingCount++;
+                    break;
+                case TicketStatus.Solved:
+                    solvedCount++;
+                    break;
+
+                default:
+                    return new TicketSummaryResult(
+                        false, 0, 0, 0, "A ticket has an invalid status.");
+            }
+        }
+        
+        return new TicketSummaryResult(
+            true, newCount, ongoingCount, solvedCount, null);
+    }
 }
