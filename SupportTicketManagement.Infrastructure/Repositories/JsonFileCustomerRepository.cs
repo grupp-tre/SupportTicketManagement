@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace SupportTicketManagement.Infrastructure.Repositories;
 
-public class JsonFileCustomerRepository() : ICustomerRepository
+public class JsonFileCustomerRepository : ICustomerRepository
 {
     private readonly JsonSerializerOptions _options = new()
     {
