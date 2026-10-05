@@ -8,7 +8,6 @@ namespace SupportTicketManagement.Infrastructure.Repositories;
 
 public class JsonFileCustomerRepository() : ICustomerRepository
 {
- 
     private readonly JsonSerializerOptions _options = new()
     {
         WriteIndented = true,
@@ -46,9 +45,7 @@ public class JsonFileCustomerRepository() : ICustomerRepository
 
         await SaveAllAsync(customers);
         return true;
-    
     }
-
     public async Task SaveAllAsync(IEnumerable<Customer> customers)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(JsonFilePath.CustomerFilePath)!);
