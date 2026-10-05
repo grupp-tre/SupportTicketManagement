@@ -10,7 +10,7 @@ public record UpdateTicketRequest
 
     string Description, 
 
-    Guid? AdministratorId, 
+    Guid? AdminId, 
 
     TicketPriority Priority, 
 
