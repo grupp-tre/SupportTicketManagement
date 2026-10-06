@@ -127,7 +127,7 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 
         var result = await GetAllTicketsAsync();
 
-        if (!result.Success)
+        if (!result.Succeeded)
         {
             return result;
         }
@@ -171,7 +171,7 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
     {
         var result = await GetAllTicketsAsync();
         
-        if (!result.Success)
+        if (!result.Succeeded)
         {
             return new TicketSummaryResult(false, 0, 0, 0, result.ErrorMessage);
         }

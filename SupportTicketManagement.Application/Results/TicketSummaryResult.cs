@@ -2,7 +2,7 @@
 
 public record TicketSummaryResult
 (
-      bool Success,
+      bool Succeeded,
       int NewCount,
       int OngoingCount,
       int SolvedCount,

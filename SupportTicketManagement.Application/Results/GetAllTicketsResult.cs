@@ -4,7 +4,7 @@ namespace SupportTicketManagement.Application.Results;
 
 public record GetAllTicketsResult
 (
-    bool Success,
+    bool Succeeded,
     IReadOnlyList<Ticket> Tickets,
     string? ErrorMessage
 );
