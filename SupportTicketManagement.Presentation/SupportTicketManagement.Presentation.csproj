@@ -46,6 +46,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SupportTicketManagement.Application\SupportTicketManagement.Application.csproj" />
     <ProjectReference Include="..\SupportTicketManagement.Domain\SupportTicketManagement.Domain.csproj" />
+    <ProjectReference Include="..\SupportTicketManagement.Infrastructure\SupportTicketManagement.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Styles\" />
