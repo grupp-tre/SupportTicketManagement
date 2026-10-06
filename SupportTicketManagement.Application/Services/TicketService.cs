@@ -6,7 +6,7 @@ using SupportTicketManagement.Domain.Repositories;
 
 namespace SupportTicketManagement.Application.Services;
 
-public class TicketService(ITicketRepository ticketRepository, IAdminService adminService) : ITicketService
+public class TicketService(ITicketRepository ticketRepository, IAdminService adminService, ICustomerService customerService) : ITicketService
 {
     public async Task<AddTicketResult> AddTicketAsync(AddTicketRequest request)
     {
@@ -120,7 +120,7 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 
     public async Task<GetAllTicketsResult> SearchTicketsAsync(SearchTicketRequest request)
     {
-        if (request.Status.HasValue && !Enum.IsDefined(typeof(TicketStatus), request.Status.Value))
+        if (request.Status.HasValue && !Enum.IsDefined(request.Status.Value))
         {
             return new GetAllTicketsResult(false, [], "Invalid ticket filter.");
         }
@@ -131,12 +131,27 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
         {
             return result;
         }
+        var customerResult = await customerService.GetAllCustomersAsync();
+
+        if (!customerResult.Succeeded)
+        {
+            return new GetAllTicketsResult(false, [], customerResult.ErrorMessage);
+        }
 
         string searchText = request.SearchText?.Trim() ?? string.Empty;
         List<Ticket> matchingTickets = [];
 
         foreach (var ticket in result.Tickets)
         {
+            var customer = customerResult.Customers.FirstOrDefault(
+                c => c.CustomerId == ticket.CustomerId);
+
+            bool matchesSearchCustomer = 
+                customer is not null && 
+                customer.CustomerName.Contains(
+                    searchText,
+                    StringComparison.OrdinalIgnoreCase);
+
             bool matchesSearchTitle = ticket.Title.Contains(
                 searchText,
                 StringComparison.OrdinalIgnoreCase);
@@ -144,7 +159,7 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
             bool matchesStatus =
                 request.Status is null || ticket.Status == request.Status.Value;
 
-            if (matchesSearchTitle && matchesStatus)
+            if ((matchesSearchTitle || matchesSearchCustomer) && matchesStatus)
             {
                 matchingTickets.Add(ticket);
             }
