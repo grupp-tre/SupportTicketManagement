@@ -1,11 +1,12 @@
 ﻿using SupportTicketManagement.Application.Requests;
 using SupportTicketManagement.Application.Results;
+using SupportTicketManagement.Domain.Enums;
 using SupportTicketManagement.Domain.Models;
 using SupportTicketManagement.Domain.Repositories;
 
 namespace SupportTicketManagement.Application.Services;
 
-public class TicketService(ITicketRepository ticketRepository, IAdminService adminService) : ITicketService
+public class TicketService(ITicketRepository ticketRepository, IAdminService adminService, ICustomerService customerService) : ITicketService
 {
     public async Task<AddTicketResult> AddTicketAsync(AddTicketRequest request)
     {
@@ -14,7 +15,28 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 
     public async Task<GetAllTicketsResult> GetAllTicketsAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            List<Ticket> tickets = await ticketRepository.GetAll();
+
+            List<Ticket> sortedTickets = tickets
+                .OrderByDescending(t => t.CreatedAt)
+                .ToList();
+
+            return new GetAllTicketsResult(true, sortedTickets, null);
+        }
+        catch (System.IO.IOException)
+        {
+            return new GetAllTicketsResult(false, [], "Could not read the ticket file.");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return new GetAllTicketsResult(false, [], "You do not have permission to read the ticket file.");
+        }
+        catch (System.Text.Json.JsonException)
+        {
+            return new GetAllTicketsResult(false, [], "The ticket file contains invalid JSON.");
+        }
     }
 
     public async Task<GetTicketByIdResult> GetTicketByIdAsync(Guid id)
@@ -106,5 +128,91 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
             throw new KeyNotFoundException($"Could not find admin with Id: '{adminId}'.");
 
         ticket.SetAdminId(adminId);
+    }
+
+    public async Task<GetAllTicketsResult> SearchTicketsAsync(SearchTicketRequest request)
+    {
+        if (request.Status.HasValue && !Enum.IsDefined(request.Status.Value))
+        {
+            return new GetAllTicketsResult(false, [], "Invalid ticket filter.");
+        }
+
+        var result = await GetAllTicketsAsync();
+
+        if (!result.Succeeded)
+        {
+            return result;
+        }
+        var customerResult = await customerService.GetAllCustomersAsync();
+
+        if (!customerResult.Succeeded)
+        {
+            return new GetAllTicketsResult(false, [], customerResult.ErrorMessage);
+        }
+
+        string searchText = request.SearchText?.Trim() ?? string.Empty;
+        List<Ticket> matchingTickets = [];
+
+        foreach (var ticket in result.Tickets)
+        {
+            var customer = customerResult.Customers.FirstOrDefault(
+                c => c.CustomerId == ticket.CustomerId);
+
+            bool matchesSearchCustomer = 
+                customer is not null && 
+                customer.CustomerName.Contains(
+                    searchText,
+                    StringComparison.OrdinalIgnoreCase);
+
+            bool matchesSearchTitle = ticket.Title.Contains(
+                searchText,
+                StringComparison.OrdinalIgnoreCase);
+
+            bool matchesStatus =
+                request.Status is null || ticket.Status == request.Status.Value;
+
+            if ((matchesSearchTitle || matchesSearchCustomer) && matchesStatus)
+            {
+                matchingTickets.Add(ticket);
+            }
+        }
+
+        return new GetAllTicketsResult(true, matchingTickets, null);
+    }
+    public async Task<TicketSummaryResult> GetTicketSummaryAsync()
+    {
+        var result = await GetAllTicketsAsync();
+        
+        if (!result.Succeeded)
+        {
+            return new TicketSummaryResult(false, 0, 0, 0, result.ErrorMessage);
+        }
+
+        int newCount = 0;
+        int ongoingCount = 0;
+        int solvedCount = 0;
+
+        foreach (var ticket in result.Tickets)
+        {
+            switch (ticket.Status)
+            {
+                case TicketStatus.New:
+                    newCount++;
+                    break;
+                case TicketStatus.Ongoing:
+                    ongoingCount++;
+                    break;
+                case TicketStatus.Solved:
+                    solvedCount++;
+                    break;
+
+                default:
+                    return new TicketSummaryResult(
+                        false, 0, 0, 0, "A ticket has an invalid status.");
+            }
+        }
+        
+        return new TicketSummaryResult(
+            true, newCount, ongoingCount, solvedCount, null);
     }
 }
