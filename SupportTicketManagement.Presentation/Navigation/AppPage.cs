@@ -2,4 +2,7 @@
 
 public enum AppPage
 {
+    Overview,
+    Customers,
+    Tickets
 }
