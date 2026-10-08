@@ -10,27 +10,51 @@
 
     <StackPanel Padding="24" Spacing="16">
         <TextBlock Text="Overview" FontSize="28"/>
-        
-        <StackPanel Orientation="Horizontal" Spacing="32">
-            <StackPanel Spacing="4">
-                <TextBlock Text="New"/>
-                <TextBlock Text="{x:Bind ViewModel.NewCount, Mode=OneWay}"
-                           FontSize="24"/>
-            </StackPanel>
+
+        <Grid ColumnSpacing="18">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             
-            <StackPanel Spacing="4">
-                <TextBlock Text="In Progress"/>
-                <TextBlock Text="{x:Bind ViewModel.OngoingCount, Mode=OneWay}"
+            <Border 
+                Grid.Column="0"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Padding="22">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="New"/>
+                    <TextBlock Text="{x:Bind ViewModel.NewCount, Mode=OneWay}"
                            FontSize="24"/>
-            </StackPanel>
+                </StackPanel>
+            </Border>
             
-            <StackPanel Spacing="4">
-                <TextBlock Text="Solved"/>
-                <TextBlock Text="{x:Bind ViewModel.SolvedCount, Mode=OneWay}"
+            <Border 
+                Grid.Column="1"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Padding="22">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="In Progress"/>
+                    <TextBlock Text="{x:Bind ViewModel.OngoingCount, Mode=OneWay}"
                            FontSize="24"/>
-            </StackPanel>
-        </StackPanel>
-        
+                </StackPanel>
+            </Border>
+
+            <Border 
+                Grid.Column="2"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Padding="22">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Solved"/>
+                    <TextBlock Text="{x:Bind ViewModel.SolvedCount, Mode=OneWay}"
+                           FontSize="24"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
         <TextBlock
             Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
             TextWrapping="Wrap"/>
