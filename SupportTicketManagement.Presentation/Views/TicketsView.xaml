@@ -6,9 +6,37 @@
     xmlns:local="using:SupportTicketManagement.Presentation.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:SupportTicketManagement.Domain.Models"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock Text="Tickets" />
+    <Grid Padding="24" RowSpacing="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Tickets" FontSize="28" />
+
+        <TextBlock
+        Grid.Row="1"
+        Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+        TextWrapping="Wrap" />
+
+        <ListView
+        Grid.Row="2"
+        ItemsSource="{x:Bind ViewModel.Tickets, Mode=OneWay}"
+        SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Ticket">
+                    <StackPanel Padding="8" Spacing="4">
+                        <TextBlock
+                        Text="{x:Bind Title}"
+                        FontSize="18" />
+                        <TextBlock Text="{x:Bind CreatedAt}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>
