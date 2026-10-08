@@ -8,7 +8,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock Text="Overview" />
-    </Grid>
+    <StackPanel Padding="24" Spacing="16">
+        <TextBlock Text="Overview" FontSize="28"/>
+        
+        <StackPanel Orientation="Horizontal" Spacing="32">
+            <StackPanel Spacing="4">
+                <TextBlock Text="New"/>
+                <TextBlock Text="{x:Bind ViewModel.NewCount, Mode=OneWay}"
+                           FontSize="24"/>
+            </StackPanel>
+            
+            <StackPanel Spacing="4">
+                <TextBlock Text="In Progress"/>
+                <TextBlock Text="{x:Bind ViewModel.OngoingCount, Mode=OneWay}"
+                           FontSize="24"/>
+            </StackPanel>
+            
+            <StackPanel Spacing="4">
+                <TextBlock Text="Solved"/>
+                <TextBlock Text="{x:Bind ViewModel.SolvedCount, Mode=OneWay}"
+                           FontSize="24"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <TextBlock
+            Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+            TextWrapping="Wrap"/>
+    </StackPanel>
 </Page>

@@ -199,7 +199,7 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
                 case TicketStatus.New:
                     newCount++;
                     break;
-                case TicketStatus.Ongoing:
+                case TicketStatus.InProgress:
                     ongoingCount++;
                     break;
                 case TicketStatus.Solved:
