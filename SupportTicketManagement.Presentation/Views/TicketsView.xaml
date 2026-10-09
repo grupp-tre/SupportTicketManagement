@@ -29,8 +29,8 @@
             <TextBox
                 Header="Search tickets"
                 PlaceholderText="Search by title or customer..."
-                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            
+                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
             <ComboBox
                 Grid.Column="1"
                 Header="Status"
@@ -43,24 +43,30 @@
                 Grid.Column="2"
                 Content="Search"
                 VerticalAlignment="Bottom"
-                Command="{x:Bind ViewModel.LoadCommand}"/>
+                Command="{x:Bind ViewModel.LoadCommand}" />
         </Grid>
-        
-        <TextBlock
-        Grid.Row="2"
-        Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-        TextWrapping="Wrap" />
+
+        <StackPanel Grid.Row="2" Spacing="4">
+            <TextBlock
+                Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                TextWrapping="Wrap" />
+
+            <TextBlock
+                Text="{x:Bind ViewModel.EmptyMessage, Mode=OneWay}"
+                TextWrapping="Wrap" />
+        </StackPanel>
 
         <ListView
-        Grid.Row="3"
-        ItemsSource="{x:Bind ViewModel.Tickets, Mode=OneWay}"
-        SelectionMode="None">
+            Grid.Row="3"
+            ItemsSource="{x:Bind ViewModel.Tickets, Mode=OneWay}"
+            SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Ticket">
                     <StackPanel Padding="8" Spacing="4">
                         <TextBlock
-                        Text="{x:Bind Title}"
-                        FontSize="18" />
+                            Text="{x:Bind Title}"
+                            FontSize="18" />
+
                         <TextBlock Text="{x:Bind CreatedAt}" />
                     </StackPanel>
                 </DataTemplate>

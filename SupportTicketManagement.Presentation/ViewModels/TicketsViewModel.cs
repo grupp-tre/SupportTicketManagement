@@ -36,11 +36,14 @@ public partial class TicketsViewModel : ObservableObject
     public partial string SearchText { get; set; } = string.Empty;
     [ObservableProperty]
     public partial TicketStatusOption? SelectedStatusOption { get; set; }
+    [ObservableProperty]
+    public partial string? EmptyMessage { get; set; }
 
     [RelayCommand]
     public async Task LoadAsync()
     {
         ErrorMessage = null;
+        EmptyMessage = null;
 
         var request = new SearchTicketRequest(SearchText, SelectedStatusOption?.Status);
 
@@ -58,6 +61,10 @@ public partial class TicketsViewModel : ObservableObject
         foreach (var ticket in result.Tickets)
         {
             Tickets.Add(ticket);
+        }
+        if (Tickets.Count == 0)
+        {
+            EmptyMessage = "No matching tickets found.";
         }
     }
 }
