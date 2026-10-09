@@ -26,6 +26,12 @@ public partial class App : Microsoft.UI.Xaml.Application
         services.AddSingleton<ICustomerRepository, JsonFileCustomerRepository>();
         services.AddSingleton<ICustomerService, CustomerService>();
 
+        services.AddSingleton<ITicketRepository, JsonFileTicketRepository>();
+        services.AddSingleton<ITicketService, TicketService>();
+
+        services.AddSingleton<IAdminRepository, JsonFileAdminRepository>();
+        services.AddSingleton<IAdminService, AdminService>();
+
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
 
