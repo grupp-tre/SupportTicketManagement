@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
@@ -17,7 +17,7 @@
   <ItemGroup>
     <None Remove="Views\CustomersView.xaml" />
     <None Remove="Views\OverviewView.xaml" />
-    <None Remove="Views\TicketsView.xaml" />
+    <None Remove="Views\RegistrationView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,17 +57,17 @@
     <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\RegistrationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\OverviewView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\CustomersView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\TicketsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
