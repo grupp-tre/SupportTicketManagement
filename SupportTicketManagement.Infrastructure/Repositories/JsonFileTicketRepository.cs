@@ -54,7 +54,7 @@ public class JsonFileTicketRepository : ITicketRepository
 
     private async Task SaveAll(IEnumerable<Ticket> tickets)
     {
-        Directory.CreateDirectory(JsonFilePath.TicketFilePath);
+        Directory.CreateDirectory(Path.GetDirectoryName(JsonFilePath.TicketFilePath)!);
 
         string json = JsonSerializer.Serialize(tickets, _options);
         string temporaryPath = JsonFilePath.TicketFilePath + ".tmp"; 

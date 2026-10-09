@@ -43,6 +43,8 @@ public partial class App : Microsoft.UI.Xaml.Application
 
         services.AddSingleton<TicketsViewModel>();
         services.AddSingleton<TicketsView>();
+        services.AddSingleton<TicketDetailsViewModel>();
+        services.AddTransient<TicketDetailsView>();
 
         _services = services.BuildServiceProvider();
     }
