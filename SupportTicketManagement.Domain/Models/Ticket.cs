@@ -1,5 +1,7 @@
 ﻿using SupportTicketManagement.Domain.Enums;
 
+using System.Text.Json.Serialization;
+
 namespace SupportTicketManagement.Domain.Models;
 
 public class Ticket
@@ -27,6 +29,19 @@ public class Ticket
         CreatedAt = DateTimeOffset.UtcNow;
     }
 
+    [JsonConstructor]
+    private Ticket(Guid id, string title, string description, TicketPriority priority,
+        Guid customerId, TicketStatus status, Guid? adminId, DateTimeOffset createdAt,
+        IReadOnlyList<TicketComment>? comments)
+        : this(id, title, description, priority, customerId)
+    {
+        SetAdminId(adminId);
+        SetStatus(status);
+        CreatedAt = createdAt;
+        foreach (var comment in comments ?? [])
+            AddComment(comment);
+    }
+
     private static Guid ValidateId(Guid id)
     {
         if (id == Guid.Empty)
@@ -37,7 +52,7 @@ public class Ticket
 
     private static string ValidateAndNormalizeTitle(string title)
     {
-        if (!string.IsNullOrWhiteSpace(title))
+        if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentNullException(nameof(title));
 
         title = title.Trim();
@@ -47,7 +62,7 @@ public class Ticket
 
     private static string ValidateAndNormalizeDescription(string description)
     {
-        if (!string.IsNullOrWhiteSpace(description))
+        if (string.IsNullOrWhiteSpace(description))
             throw new ArgumentNullException(nameof(description));
 
         description = description.Trim();
@@ -89,6 +104,7 @@ public class Ticket
             if (status == TicketStatus.Solved)
                 throw new InvalidOperationException("Cannot set ticket status to Solved on a ticket with no administrator");
         }
+        Status = status;
     }
 
     public void AddComment(TicketComment comment)
