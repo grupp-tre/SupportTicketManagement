@@ -4,12 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="using:SupportTicketManagement.Presentation.ViewModels"
+    xmlns:models="using:SupportTicketManagement.Presentation.Models"
     mc:Ignorable="d"
     IsEnabled="{x:Bind ViewModel.IsNotLoading, Mode=OneWay}"
 >
     <Grid Padding="34" RowSpacing="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -26,12 +27,22 @@
                 <ColumnDefinition Width="180" />
             </Grid.ColumnDefinitions>
 
-            <TextBox PlaceholderText="Search by title or customer…" AutomationProperties.Name="Search tickets" />
-            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" AutomationProperties.Name="Filter by status"
-                ItemsSource="{x:Bind ViewModel.StatusOptions}" SelectedIndex="0" />
+            <TextBox PlaceholderText="Search by title or customer…" />
+            <ComboBox
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{x:Bind ViewModel.StatusOptions}"
+                SelectedIndex="0"
+            />
         </Grid>
 
-        <Grid Grid.Row="2">
+        <TextBlock
+            Grid.Row="2"
+            Text="{x:Bind ViewModel.Message, Mode=OneWay}"
+            TextWrapping="Wrap"
+        />
+
+        <Grid Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -55,7 +66,7 @@
             <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.Tickets}" SelectionMode="None"
                 ItemContainerStyle="{StaticResource TableItemStyle}">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="viewModels:TicketRow">
+                    <DataTemplate x:DataType="models:TicketRow">
                         <Border Style="{StaticResource TableRowStyle}">
                             <Grid ColumnSpacing="12">
                                 <Grid.ColumnDefinitions>
@@ -67,14 +78,25 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Text="{x:Bind Title}" Style="{StaticResource TableCellTextStyle}" />
-                                <TextBlock Grid.Column="1" Text="{x:Bind CustomerName}" Style="{StaticResource TableCellTextStyle}" />
-
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Text="{x:Bind CustomerName}"
+                                    Style="{StaticResource TableCellTextStyle}"
+                                />
                                 <Border Grid.Column="2" Style="{StaticResource StatusBadgeStyle}">
                                     <TextBlock Text="{x:Bind StatusText}" />
                                 </Border>
-
-                                <TextBlock Grid.Column="3" Text="{x:Bind PriorityText}" Style="{StaticResource TableCellTextStyle}" />
-                                <Button Grid.Column="4" Content="Open" Style="{StaticResource TableActionButtonStyle}" />
+                                <TextBlock
+                                    Grid.Column="3"
+                                    Text="{x:Bind PriorityText}"
+                                    Style="{StaticResource TableCellTextStyle}"
+                                />
+                                <Button
+                                    Grid.Column="4"
+                                    Content="Open"
+                                    Style="{StaticResource TableActionButtonStyle}"
+                                    Click="OpenTicket_Click"
+                                />
                             </Grid>
                         </Border>
                     </DataTemplate>

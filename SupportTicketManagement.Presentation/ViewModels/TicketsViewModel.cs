@@ -2,6 +2,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SupportTicketManagement.Application.Services;
 using SupportTicketManagement.Domain.Enums;
+using SupportTicketManagement.Presentation.Navigation;
+using SupportTicketManagement.Presentation.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,15 +12,8 @@ using System.Threading.Tasks;
 
 namespace SupportTicketManagement.Presentation.ViewModels;
 
-public record TicketRow
-(
-    string Title,
-    string CustomerName,
-    string StatusText,
-    string PriorityText
-);
-
-public partial class TicketsViewModel(ITicketService ticketService, ICustomerService customerService) : ObservableObject
+public partial class TicketsViewModel(ITicketService ticketService, ICustomerService customerService,
+    INavigationService navigationService, TicketDetailsViewModel ticketDetailsViewModel) : ObservableObject
 {
     public ObservableCollection<TicketRow> Tickets { get; } = [];
 
@@ -67,6 +62,7 @@ public partial class TicketsViewModel(ITicketService ticketService, ICustomerSer
             foreach (var ticket in ticketResult.Tickets)
             {
                 Tickets.Add(new TicketRow(
+                    ticket.Id,
                     ticket.Title,
                     customerNames.GetValueOrDefault(
                         ticket.CustomerId, "Unknown customer"),
@@ -82,6 +78,21 @@ public partial class TicketsViewModel(ITicketService ticketService, ICustomerSer
         catch (Exception ex)
         {
             Message = $"Could not load tickets: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task OpenTicketAsync(TicketRow row)
+    {
+        IsLoading = true;
+        try
+        {
+            await ticketDetailsViewModel.LoadTicketAsync(row.Id);
+            navigationService.Navigate(AppPage.TicketDetails);
         }
         finally
         {
