@@ -25,17 +25,9 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 
             return new GetAllTicketsResult(true, sortedTickets, null);
         }
-        catch (System.IO.IOException)
+        catch (Exception ex)
         {
-            return new GetAllTicketsResult(false, [], "Could not read the ticket file.");
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return new GetAllTicketsResult(false, [], "You do not have permission to read the ticket file.");
-        }
-        catch (System.Text.Json.JsonException)
-        {
-            return new GetAllTicketsResult(false, [], "The ticket file contains invalid JSON.");
+            return new GetAllTicketsResult(false, [], ex.Message);
         }
     }
 
