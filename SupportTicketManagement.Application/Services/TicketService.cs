@@ -67,7 +67,7 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
                 ticket.SetDescription(request.Description);
 
             if (ticket.AdminId != request.AdminId)
-                await SetAdminId(request.AdminId, ticket);
+                await SetAdminIdAsync(request.AdminId, ticket);
 
             if (ticket.Priority != request.Priority)
                 ticket.SetPriority(request.Priority);
@@ -122,7 +122,7 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
         return new TicketComment(ticketId, commentText);
     }
 
-    private async Task SetAdminId(Guid? adminId, Ticket ticket)
+    private async Task SetAdminIdAsync(Guid? adminId, Ticket ticket)
     {
         if (adminId is not null && !await adminService.AdminExistsAsync(adminId.Value))
             throw new KeyNotFoundException($"Could not find admin with Id: '{adminId}'.");
@@ -156,11 +156,11 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
         foreach (var ticket in result.Tickets)
         {
             var customer = customerResult.Customers.FirstOrDefault(
-                c => c.CustomerId == ticket.CustomerId);
+                c => c.Id == ticket.CustomerId);
 
             bool matchesSearchCustomer = 
                 customer is not null && 
-                customer.CustomerName.Contains(
+                customer.Name.Contains(
                     searchText,
                     StringComparison.OrdinalIgnoreCase);
 
@@ -189,7 +189,7 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
         }
 
         int newCount = 0;
-        int ongoingCount = 0;
+        int inProgressCount = 0;
         int solvedCount = 0;
 
         foreach (var ticket in result.Tickets)
@@ -199,8 +199,8 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
                 case TicketStatus.New:
                     newCount++;
                     break;
-                case TicketStatus.Ongoing:
-                    ongoingCount++;
+                case TicketStatus.InProgress:
+                    inProgressCount++;
                     break;
                 case TicketStatus.Solved:
                     solvedCount++;
@@ -213,6 +213,6 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
         }
         
         return new TicketSummaryResult(
-            true, newCount, ongoingCount, solvedCount, null);
+            true, newCount, inProgressCount, solvedCount, null);
     }
 }

@@ -37,7 +37,7 @@ public class JsonFileCustomerRepository : ICustomerRepository
     {
         List<Customer> customers = await GetAll();
 
-        int index = customers.FindIndex(c => c.CustomerId == customer.CustomerId);
+        int index = customers.FindIndex(c => c.Id == customer.Id);
        if (index == -1)
         return false;
 

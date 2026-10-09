@@ -16,8 +16,8 @@ public class CustomerService(ICustomerRepository customerRepository) : ICustomer
 
         try
         {
-            var customerId = Guid.NewGuid();
-            customer = new Customer(customerId, addCustomerRequest.CustomerName, addCustomerRequest.EmailAddress);
+            var id = Guid.NewGuid();
+            customer = new Customer(id, addCustomerRequest.Name, addCustomerRequest.EmailAddress);
 
             bool saved = await customerRepository.Create(customer);
 
@@ -40,19 +40,19 @@ public class CustomerService(ICustomerRepository customerRepository) : ICustomer
     {
         ArgumentNullException.ThrowIfNull(updateCustomerRequest);
 
-        if (updateCustomerRequest.CustomerId == Guid.Empty)
+        if (updateCustomerRequest.Id == Guid.Empty)
             return new UpdateCustomerResult(false, null, "Customer id is required.");
 
         try
         {
 
             var customers = await customerRepository.GetAll();
-            var updatedCustomer = customers.FirstOrDefault(c => c.CustomerId == updateCustomerRequest.CustomerId);
+            var updatedCustomer = customers.FirstOrDefault(c => c.Id == updateCustomerRequest.Id);
 
             if (updatedCustomer is null)
                 return new UpdateCustomerResult(false, null, "The customer could not be found.");
 
-            updatedCustomer.Rename(updateCustomerRequest.CustomerName);
+            updatedCustomer.Rename(updateCustomerRequest.Name);
             updatedCustomer.ChangeEmailAddress(updateCustomerRequest.EmailAddress);
 
             var saved = await customerRepository.Update(updatedCustomer);
