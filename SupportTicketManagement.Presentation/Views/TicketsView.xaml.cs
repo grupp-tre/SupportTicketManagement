@@ -1,3 +1,4 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SupportTicketManagement.Presentation.ViewModels;
 
@@ -12,5 +13,12 @@ public sealed partial class TicketsView : Page
         ViewModel = viewModel;
 
         InitializeComponent();
+
+        Loaded += TicketsView_Loaded;
+    }
+
+    private async void TicketsView_Loaded(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.LoadTicketsCommand.ExecuteAsync(null);
     }
 }

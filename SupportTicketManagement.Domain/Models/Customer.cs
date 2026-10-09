@@ -1,30 +1,31 @@
 ﻿namespace SupportTicketManagement.Domain.Models;
 
-public class Customer(Guid customerId, string customerName, string emailAddress)
+public class Customer(Guid id, string name, string emailAddress)
 {
-    public Guid CustomerId { get; private set; } = NormalizeRequiredCustomerId(customerId);
-    public string CustomerName { get; private set; } = NormalizeRequiredCustomerName(customerName);
+    public Guid Id { get; private set; } = NormalizeRequiredId(id);
+    public string Name { get; private set; } = NormalizeRequiredName(name);
     public string EmailAddress { get; private set; } = NormalizeRequiredEmailAddress(emailAddress);
 
-    private static Guid NormalizeRequiredCustomerId(Guid customerId)
+    private static Guid NormalizeRequiredId(Guid id)
     {
-        if (customerId == Guid.Empty)
+        if (id == Guid.Empty)
             throw new ArgumentException("Customer Id is required.");
 
-        return customerId;
+        return id;
     }
 
-    private static string NormalizeRequiredCustomerName(string customerName)
+    private static string NormalizeRequiredName(string name)
     {
 
-        if (string.IsNullOrWhiteSpace(customerName))
+        if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Customer name is required.");
 
-        if (customerName.Length < 2)
+        if (name.Length < 2)
             throw new ArgumentException("Customer name must be a valid name and contain at least 2 letters");
 
-        return customerName.Trim();
+        return name.Trim();
     }
+
     private static string NormalizeRequiredEmailAddress(string emailAddress)
     {
         if (string.IsNullOrWhiteSpace(emailAddress))
@@ -35,15 +36,14 @@ public class Customer(Guid customerId, string customerName, string emailAddress)
 
         return emailAddress.Trim().ToLower();
     }
-    public void Rename(string customerName)
-    {
-        CustomerName = NormalizeRequiredCustomerName(customerName);
 
+    public void Rename(string name)
+    {
+        Name = NormalizeRequiredName(name);
     }
 
     public void ChangeEmailAddress(string emailAddress)
     {
-
         EmailAddress = NormalizeRequiredEmailAddress(emailAddress);
     }
 }
