@@ -39,7 +39,7 @@ public partial class OverviewViewModel : ObservableObject
         }
 
         NewCount = result.NewCount;
-        OngoingCount = result.OngoingCount;
+        OngoingCount = result.InProgressCount;
         SolvedCount = result.SolvedCount;
     }
    
