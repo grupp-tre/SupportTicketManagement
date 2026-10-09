@@ -13,18 +13,46 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <TextBlock Text="Tickets" FontSize="28" />
 
+        <Grid Grid.Row="1" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+                Header="Search tickets"
+                PlaceholderText="Search by title or customer..."
+                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <ComboBox
+                Grid.Column="1"
+                Header="Status"
+                MinWidth="160"
+                ItemsSource="{x:Bind ViewModel.StatusOptions}"
+                DisplayMemberPath="Label"
+                SelectedItem="{x:Bind ViewModel.SelectedStatusOption, Mode=TwoWay}" />
+
+            <Button
+                Grid.Column="2"
+                Content="Search"
+                VerticalAlignment="Bottom"
+                Command="{x:Bind ViewModel.LoadCommand}"/>
+        </Grid>
+        
         <TextBlock
-        Grid.Row="1"
+        Grid.Row="2"
         Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
         TextWrapping="Wrap" />
 
         <ListView
-        Grid.Row="2"
+        Grid.Row="3"
         ItemsSource="{x:Bind ViewModel.Tickets, Mode=OneWay}"
         SelectionMode="None">
             <ListView.ItemTemplate>
