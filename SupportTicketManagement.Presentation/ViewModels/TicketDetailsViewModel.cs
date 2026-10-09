@@ -123,10 +123,13 @@ public partial class TicketDetailsViewModel(
         if (!CanEdit)
             return;
 
-        Message = ValidateFields();
-        if (Message.Length > 0)
+        if (StatusIndex < 0 || StatusIndex >= StatusOptions.Count)
+        {
+            Message = "Select a status.";
             return;
+        }
 
+        Message = "";
         IsBusy = true;
         try
         {
@@ -160,12 +163,6 @@ public partial class TicketDetailsViewModel(
         if (!CanEdit)
             return;
 
-        if (string.IsNullOrWhiteSpace(NewComment))
-        {
-            Message = "Enter a comment.";
-            return;
-        }
-
         IsBusy = true;
         Message = "";
         try
@@ -196,20 +193,6 @@ public partial class TicketDetailsViewModel(
         {
             IsBusy = false;
         }
-    }
-
-    private string ValidateFields()
-    {
-        if (string.IsNullOrWhiteSpace(Title) || string.IsNullOrWhiteSpace(Description))
-            return "Title and description are required.";
-
-        if (StatusIndex < 0 || StatusIndex >= StatusOptions.Count)
-            return "Select a status.";
-
-        if (StatusIndex > 0 && SelectedAssignee?.Id is null)
-            return "Select an assignee for In progress or Solved.";
-
-        return "";
     }
 
     private void SetTicketFields(Ticket ticket)
