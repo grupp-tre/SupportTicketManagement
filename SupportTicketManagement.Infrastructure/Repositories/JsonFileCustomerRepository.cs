@@ -13,7 +13,6 @@ public class JsonFileCustomerRepository : ICustomerRepository
         WriteIndented = true,
         PropertyNameCaseInsensitive = true,
     };
-    
 
     public Task<bool> Create(Customer customer)
     {
@@ -33,13 +32,21 @@ public class JsonFileCustomerRepository : ICustomerRepository
         return customers;
     }
 
+    public async Task<Customer?> GetById(Guid id)
+    {
+        List<Customer> customers = await GetAll();
+
+        return customers.FirstOrDefault(c => c.Id == id);
+    }
+
     public async Task<bool> Update(Customer customer)
     {
         List<Customer> customers = await GetAll();
 
         int index = customers.FindIndex(c => c.Id == customer.Id);
-       if (index == -1)
-        return false;
+
+        if (index == -1)
+            return false;
 
         customers[index] = customer;
 

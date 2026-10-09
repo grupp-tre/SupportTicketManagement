@@ -30,12 +30,24 @@ public class CustomerService(ICustomerRepository customerRepository) : ICustomer
             return new AddCustomerResult(false, null, ex.Message);
         }
     }
+
     public async Task<GetAllCustomersResult> GetAllCustomersAsync()
     {
 
         var customers = await customerRepository.GetAll();
         return new GetAllCustomersResult(true, customers, null);
     }
+
+    public async Task<GetCustomerByIdResult> GetCustomerByIdAsync(Guid id)
+    {
+        var customer = await customerRepository.GetById(id);
+
+        if (customer == null)
+            return new GetCustomerByIdResult(false, null, $"Could not find customer with Id: '{id}'.");
+
+        return new GetCustomerByIdResult(true, customer, null);
+    }
+
     public async Task<UpdateCustomerResult> UpdateCustomerAsync(UpdateCustomerRequest updateCustomerRequest)
     {
         ArgumentNullException.ThrowIfNull(updateCustomerRequest);
