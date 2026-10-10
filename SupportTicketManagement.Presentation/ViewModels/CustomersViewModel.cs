@@ -14,7 +14,7 @@ public partial class CustomersViewModel(ICustomerService customerService, INavig
     public ObservableCollection<Customer> Customers { get; } = [];
 
     [ObservableProperty]
-    public partial string Message { get;  set; } = string.Empty;
+    public partial string Message { get; set; } = string.Empty;
 
     public async Task LoadCustomersAsync()
     {

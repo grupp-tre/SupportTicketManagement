@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
@@ -54,9 +54,6 @@
     <ProjectReference Include="..\SupportTicketManagement.Infrastructure\SupportTicketManagement.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Styles\" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Update="Views\CreateCustomer.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -75,6 +72,9 @@
     <Page Update="Views\TicketsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Styles\" />
   </ItemGroup>
 
   <!--

@@ -16,7 +16,8 @@ public partial class NavigationService(IServiceProvider services) : ObservableOb
         CurrentPage = page switch
         {
             AppPage.Overview => services.GetRequiredService<OverviewView>(), 
-            AppPage.Customers => services.GetRequiredService<CustomersView>(), 
+            AppPage.Customers => services.GetRequiredService<CustomersView>(),
+            AppPage.CreateCustomer => services.GetRequiredService<CreateCustomer>(),
             AppPage.Tickets => services.GetRequiredService<TicketsView>(), 
             _ => throw new ArgumentOutOfRangeException(nameof(page))
         };

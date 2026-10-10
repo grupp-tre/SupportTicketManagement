@@ -32,8 +32,11 @@ public partial class App : Microsoft.UI.Xaml.Application
         services.AddSingleton<OverviewViewModel>();
         services.AddSingleton<OverviewView>();
 
-        services.AddSingleton<CustomersViewModel>();
-        services.AddSingleton<CustomersView>();
+        services.AddTransient<CustomersViewModel>();
+        services.AddTransient<CustomersView>();
+
+        services.AddTransient<CreateCustomerViewModel>();
+        services.AddTransient<CreateCustomer>();
 
         services.AddSingleton<TicketsViewModel>();
         services.AddSingleton<TicketsView>();

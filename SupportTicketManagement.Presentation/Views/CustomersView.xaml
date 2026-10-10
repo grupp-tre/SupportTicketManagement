@@ -10,18 +10,39 @@
     
     xmlns:models="using:SupportTicketManagement.Domain.Models"
     Loaded="Page_Loaded" 
+
     >
 
-    <StackPanel>
-        <ListView ItemsSource="{x:Bind ViewModel.Customers}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:Customer">
-                    <StackPanel Orientation="Horizontal" Spacing="24">
-                        <TextBlock Text="{x:Bind CustomerName}" Width="200" />
-                        <TextBlock Text="{x:Bind EmailAddress}"  />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackPanel>
+    <Grid Padding="34" RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <TextBlock Text="Customers" Style="{StaticResource PageTitleStyle}" />
+                <Button Content="+ Add customer" HorizontalAlignment="Right" Style="{StaticResource PrimaryButtonStyle}"/>
+            </Grid>
+        </Grid>
+
+        <StackPanel>
+            <ListView ItemsSource="{x:Bind ViewModel.Customers}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Customer">
+                        <StackPanel Orientation="Horizontal" Spacing="24">
+                            <TextBlock Text="{x:Bind CustomerName}" Width="200" />
+                            <TextBlock Text="{x:Bind EmailAddress}"  />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+    </Grid>
 </Page>
