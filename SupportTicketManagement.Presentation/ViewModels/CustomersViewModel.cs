@@ -32,6 +32,11 @@ public partial class CustomersViewModel(ICustomerService customerService, INavig
         foreach (var customer in customersResult.Customers)
             Customers.Add(customer);
 
+        if (Customers.Count == 0)
+        {
+            Message = "No customers registered yet.";
+        }
+
     }
 
     [RelayCommand]
