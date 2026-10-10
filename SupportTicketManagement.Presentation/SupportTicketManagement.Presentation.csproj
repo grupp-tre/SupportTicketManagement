@@ -57,6 +57,11 @@
     <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\CreateCustomer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\OverviewView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
