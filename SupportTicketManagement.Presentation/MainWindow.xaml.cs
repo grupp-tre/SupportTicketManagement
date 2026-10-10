@@ -66,6 +66,7 @@ public sealed partial class MainWindow : Window
             OverviewView => OverviewNavigationItem,
             CustomersView => CustomersNavigationItem,
             TicketsView => TicketsNavigationItem,
+            TicketDetailsView => TicketsNavigationItem,
             _ => OverviewNavigationItem
         };
     }

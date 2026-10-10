@@ -2,8 +2,8 @@
 
 public record UpdateCustomerRequest
 (
-    Guid CustomerId,
-    string CustomerName,
+    Guid Id,
+    string Name,
     string EmailAddress
 );
 

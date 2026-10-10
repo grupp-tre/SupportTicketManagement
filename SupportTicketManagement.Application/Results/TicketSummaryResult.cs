@@ -4,7 +4,7 @@ public record TicketSummaryResult
 (
       bool Succeeded,
       int NewCount,
-      int OngoingCount,
+      int InProgressCount,
       int SolvedCount,
       string? ErrorMessage
 );
