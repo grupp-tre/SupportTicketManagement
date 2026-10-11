@@ -37,7 +37,8 @@
             <TextBox
                 Header="Search tickets"
                 PlaceholderText="Search by title or customer..."
-                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                KeyDown="SearchTextBox_KeyDown" />
 
             <ComboBox
                 Grid.Column="1"

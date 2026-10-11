@@ -1,5 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Windows.System;
 using SupportTicketManagement.Presentation.Models;
 using SupportTicketManagement.Presentation.ViewModels;
 
@@ -23,6 +25,20 @@ public sealed partial class TicketsView : Page
         RoutedEventArgs e)
     {
         await ViewModel.LoadTicketsCommand.ExecuteAsync(null);
+    }
+    private async void SearchTextBox_KeyDown(
+        object sender,
+        KeyRoutedEventArgs e)
+    {
+        if (e.Key != VirtualKey.Enter)
+            return;
+
+        e.Handled = true;
+
+        if (ViewModel.LoadTicketsCommand.CanExecute(null))
+        {
+            await ViewModel.LoadTicketsCommand.ExecuteAsync(null);
+        }
     }
 
     private async void OpenTicket_Click(
