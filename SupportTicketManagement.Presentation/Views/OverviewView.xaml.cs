@@ -12,5 +12,11 @@ public sealed partial class OverviewView : Page
         ViewModel = viewModel;
 
         InitializeComponent();
+        Loaded += OverviewView_Loaded;
+    }
+
+    private async void OverviewView_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        await ViewModel.LoadAsync();
     }
 }
