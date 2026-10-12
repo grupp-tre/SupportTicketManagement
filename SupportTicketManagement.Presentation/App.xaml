@@ -13,7 +13,6 @@
                 <ResourceDictionary Source="Styles/TableStyles.xaml"/>
                 <ResourceDictionary Source="Styles/FormStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <!-- Other app resources here -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -14,9 +14,14 @@ public class JsonFileCustomerRepository : ICustomerRepository
         PropertyNameCaseInsensitive = true,
     };
 
-    public Task<bool> Create(Customer customer)
+    public async Task<bool> Create(Customer customer)
     {
-        throw new NotImplementedException();
+        List<Customer> customers = await GetAll();
+
+        customers.Add(customer);
+
+        await SaveAllAsync(customers);
+        return true;
     }
 
     public async Task<List<Customer>> GetAll()

@@ -21,6 +21,12 @@ public partial class MainViewModel(INavigationService navigationService) : Obser
     }
 
     [RelayCommand]
+    private void ShowCreateCustomer()
+    {
+        Navigation.Navigate(AppPage.CreateCustomer);
+    }
+
+    [RelayCommand]
     private void ShowTickets()
     {
         Navigation.Navigate(AppPage.Tickets);

@@ -36,6 +36,9 @@ public sealed partial class MainWindow : Window
             case "customers":
                 ViewModel.ShowCustomersCommand.Execute(null);
                 break;
+            case "createcustomer":
+                ViewModel.ShowCreateCustomerCommand.Execute(null);
+                break;
             case "tickets":
                 ViewModel.ShowTicketsCommand.Execute(null);
                 break;
