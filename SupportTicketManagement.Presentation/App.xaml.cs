@@ -45,6 +45,7 @@ public partial class App : Microsoft.UI.Xaml.Application
         services.AddSingleton<TicketsView>();
         services.AddSingleton<TicketDetailsViewModel>();
         services.AddTransient<TicketDetailsView>();
+        services.AddSingleton<TicketRegistrationView>();
 
         _services = services.BuildServiceProvider();
     }

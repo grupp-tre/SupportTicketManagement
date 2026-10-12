@@ -5,5 +5,6 @@ public enum AppPage
     Overview,
     Customers,
     Tickets,
-    TicketDetails
+    TicketDetails,
+    TicketRegistration
 }
