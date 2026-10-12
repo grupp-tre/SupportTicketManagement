@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SupportTicketManagement.Application.Services;
 using SupportTicketManagement.Domain.Models;
 using SupportTicketManagement.Presentation.Navigation;
+using SupportTicketManagement.Presentation.Views;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -36,13 +37,22 @@ public partial class CustomersViewModel(ICustomerService customerService, INavig
         {
             Message = "No customers registered yet.";
         }
-
     }
 
     [RelayCommand]
     private void OpenCreateCustomer()
     {
         navigationService.Navigate(AppPage.CreateCustomer);
+    }
+
+    [RelayCommand]
+    private async Task EditCustomerAsync(Customer customer)
+    {
+        navigationService.Navigate(AppPage.CreateCustomer);
+
+        if(navigationService.CurrentPage is CreateCustomer page)
+            await page.ViewModel.LoadCustomerAsync(customer.Id);
+
     }
 }
 

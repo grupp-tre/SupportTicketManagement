@@ -52,6 +52,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Name/Company" Style="{StaticResource TableHeaderTextStyle}" />
@@ -66,10 +67,18 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="{x:Bind Name}" />
-                                <TextBlock Text="{x:Bind EmailAddress}"  />
+                                <TextBlock Grid.Column="0" Text="{x:Bind Name}" />
+                                <TextBlock Grid.Column="1" Text="{x:Bind EmailAddress}"/>
+
+                                <Button
+                                        Grid.Column="2"
+                                        Content="Edit"
+                                        Style="{StaticResource TableActionButtonStyle}"
+                                        Click="EditCustomer_Click">
+                                </Button>
                             </Grid>
                         </Border>
                     </DataTemplate>
