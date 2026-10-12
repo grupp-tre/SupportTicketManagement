@@ -23,20 +23,20 @@ public partial class App : Microsoft.UI.Xaml.Application
 
         services.AddSingleton<INavigationService, NavigationService>();
 
-        services.AddSingleton<ICustomerRepository, JsonFileCustomerRepository>();
-        services.AddSingleton<ICustomerService, CustomerService>();
+        services.AddTransient<ICustomerRepository, JsonFileCustomerRepository>();
+        services.AddTransient<ICustomerService, CustomerService>();
 
-        services.AddSingleton<ITicketRepository, JsonFileTicketRepository>();
-        services.AddSingleton<ITicketService, TicketService>();
+        services.AddTransient<ITicketRepository, JsonFileTicketRepository>();
+        services.AddTransient<ITicketService, TicketService>();
 
-        services.AddSingleton<IAdminRepository, JsonFileAdminRepository>();
-        services.AddSingleton<IAdminService, AdminService>();
+        services.AddTransient<IAdminRepository, JsonFileAdminRepository>();
+        services.AddTransient<IAdminService, AdminService>();
 
-        services.AddSingleton<MainViewModel>();
-        services.AddSingleton<MainWindow>();
+        services.AddTransient<MainViewModel>();
+        services.AddTransient<MainWindow>();
 
-        services.AddSingleton<OverviewViewModel>();
-        services.AddSingleton<OverviewView>();
+        services.AddTransient<OverviewViewModel>();
+        services.AddTransient<OverviewView>();
 
         services.AddTransient<CustomersViewModel>();
         services.AddTransient<CustomersView>();
@@ -44,9 +44,9 @@ public partial class App : Microsoft.UI.Xaml.Application
         services.AddTransient<CreateCustomerViewModel>();
         services.AddTransient<CreateCustomer>();
 
-        services.AddSingleton<TicketsViewModel>();
-        services.AddSingleton<TicketsView>();
-        services.AddSingleton<TicketDetailsViewModel>();
+        services.AddTransient<TicketsViewModel>();
+        services.AddTransient<TicketsView>();
+        services.AddTransient<TicketDetailsViewModel>();
         services.AddTransient<TicketDetailsView>();
 
         _services = services.BuildServiceProvider();

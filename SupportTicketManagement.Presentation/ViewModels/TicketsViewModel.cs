@@ -5,6 +5,7 @@ using SupportTicketManagement.Application.Services;
 using SupportTicketManagement.Domain.Enums;
 using SupportTicketManagement.Presentation.Models;
 using SupportTicketManagement.Presentation.Navigation;
+using SupportTicketManagement.Presentation.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,18 +19,15 @@ public partial class TicketsViewModel : ObservableObject
     private readonly ITicketService _ticketService;
     private readonly ICustomerService _customerService;
     private readonly INavigationService _navigationService;
-    private readonly TicketDetailsViewModel _ticketDetailsViewModel;
 
     public TicketsViewModel(
         ITicketService ticketService,
         ICustomerService customerService,
-        INavigationService navigationService,
-        TicketDetailsViewModel ticketDetailsViewModel)
+        INavigationService navigationService)
     {
         _ticketService = ticketService;
         _customerService = customerService;
         _navigationService = navigationService;
-        _ticketDetailsViewModel = ticketDetailsViewModel;
 
         SelectedStatusOption = StatusOptions[0];
     }
@@ -131,8 +129,10 @@ public partial class TicketsViewModel : ObservableObject
 
         try
         {
-            await _ticketDetailsViewModel.LoadTicketAsync(row.Id);
             _navigationService.Navigate(AppPage.TicketDetails);
+
+            if (_navigationService.CurrentPage is TicketDetailsView page)
+                await page.ViewModel.LoadTicketAsync(row.Id);
         }
         finally
         {
