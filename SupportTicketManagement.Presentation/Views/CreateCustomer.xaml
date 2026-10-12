@@ -8,7 +8,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid Padding="28">
+        <StackPanel Style="{StaticResource FormPanelStyle}" >
+            <TextBlock
+                Text="Add Customer"
+                Style="{StaticResource PageTitleStyle}" />
+               
+            <TextBlock
+                Text="Customer contact details"
+                Style="{StaticResource SectionTitleStyle}"/>
+             
+            <TextBox
+                Header="Name / Company name"
+                PlaceholderText="Enter the customer name"
+                Text="{x:Bind ViewModel.CustomerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+            <TextBox
+                Header="Email Address"
+                PlaceholderText="name@company.example" 
+                Text="{x:Bind ViewModel.EmailAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+              
+            <TextBlock
+                Text="{x:Bind ViewModel.Message, Mode=OneWay}" 
+                TextWrapping="Wrap"/>
+
+            <StackPanel Style="{StaticResource FormActionsStyle}">
+                <Button Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{x:Bind ViewModel.SaveCommand}"
+                        Content="Save customer" >
+                </Button>
+
+                <Button 
+                    Content="Cancel"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Command="{x:Bind ViewModel.CancelCommand}" />
+            </StackPanel>
+            
+        </StackPanel>
     </Grid>
 </Page>
