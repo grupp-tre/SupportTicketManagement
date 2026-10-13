@@ -5,8 +5,12 @@ using System.Text.Json;
 
 namespace SupportTicketManagement.Infrastructure.Repositories;
 
-public class JsonFileTicketRepository : ITicketRepository
+public class JsonFileTicketRepository(string filePath) : ITicketRepository
 {
+    private readonly string _filePath = Path.GetFullPath(filePath);
+
+    public JsonFileTicketRepository() : this(JsonFilePath.TicketFilePath) { }
+
     private readonly JsonSerializerOptions _options = new()
     {
         WriteIndented = true,
@@ -20,13 +24,13 @@ public class JsonFileTicketRepository : ITicketRepository
 
     public async Task<List<Ticket>> GetAll()
     {
-        if (!File.Exists(JsonFilePath.TicketFilePath))
+        if (!File.Exists(_filePath))
             return [];
 
-        string json = await File.ReadAllTextAsync(JsonFilePath.TicketFilePath);
+        string json = await File.ReadAllTextAsync(_filePath);
 
         return JsonSerializer.Deserialize<List<Ticket>>(json, _options)
-            ?? throw new JsonException($"Could not deserialize file at: '{JsonFilePath.TicketFilePath}'");
+            ?? throw new JsonException($"Could not deserialize file at: '{_filePath}'");
     }
 
     public async Task<Ticket?> GetById(Guid id)
@@ -54,12 +58,12 @@ public class JsonFileTicketRepository : ITicketRepository
 
     private async Task SaveAll(IEnumerable<Ticket> tickets)
     {
-        Directory.CreateDirectory(Path.GetDirectoryName(JsonFilePath.TicketFilePath)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(_filePath)!);
 
         string json = JsonSerializer.Serialize(tickets, _options);
-        string temporaryPath = JsonFilePath.TicketFilePath + ".tmp"; 
+        string temporaryPath = _filePath + ".tmp";
 
         await File.WriteAllTextAsync(temporaryPath, json);
-        File.Move(temporaryPath, JsonFilePath.TicketFilePath, overwrite: true);
+        File.Move(temporaryPath, _filePath, overwrite: true);
     }
 }

@@ -5,8 +5,12 @@ using System.Text.Json;
 
 namespace SupportTicketManagement.Infrastructure.Repositories;
 
-public class JsonFileAdminRepository : IAdminRepository
+public class JsonFileAdminRepository(string filePath) : IAdminRepository
 {
+    private readonly string _filePath = Path.GetFullPath(filePath);
+
+    public JsonFileAdminRepository() : this(JsonFilePath.AdminFilePath) { }
+
     private readonly JsonSerializerOptions _options = new()
     {
         WriteIndented = true,
@@ -15,13 +19,13 @@ public class JsonFileAdminRepository : IAdminRepository
 
     public async Task<List<Admin>> GetAll()
     {
-        if (!File.Exists(JsonFilePath.AdminFilePath))
+        if (!File.Exists(_filePath))
             return [];
 
-        string json = await File.ReadAllTextAsync(JsonFilePath.AdminFilePath);
+        string json = await File.ReadAllTextAsync(_filePath);
 
         return JsonSerializer.Deserialize<List<Admin>>(json, _options)
-            ?? throw new JsonException($"Could not deserialize file at: '{JsonFilePath.AdminFilePath}'");
+            ?? throw new JsonException($"Could not deserialize file at: '{_filePath}'");
     }
 
     public async Task<Admin?> GetById(Guid id)
