@@ -6,8 +6,12 @@ using System.Text.Json;
 
 namespace SupportTicketManagement.Infrastructure.Repositories;
 
-public class JsonFileCustomerRepository : ICustomerRepository
+public class JsonFileCustomerRepository(string filePath) : ICustomerRepository
 {
+    private readonly string _filePath = Path.GetFullPath(filePath);
+
+    public JsonFileCustomerRepository() : this(JsonFilePath.CustomerFilePath) { }
+
     private readonly JsonSerializerOptions _options = new()
     {
         WriteIndented = true,
@@ -26,10 +30,10 @@ public class JsonFileCustomerRepository : ICustomerRepository
 
     public async Task<List<Customer>> GetAll()
     {
-        if (!File.Exists(JsonFilePath.CustomerFilePath))
+        if (!File.Exists(_filePath))
             return [];
 
-        var json = await File.ReadAllTextAsync(JsonFilePath.CustomerFilePath);
+        var json = await File.ReadAllTextAsync(_filePath);
 
         var customers = JsonSerializer.Deserialize<List<Customer>>(json, _options)
             ?? throw new JsonException("The customer files must contain a JSON-based list.");
@@ -60,13 +64,13 @@ public class JsonFileCustomerRepository : ICustomerRepository
     }
     public async Task SaveAllAsync(IEnumerable<Customer> customers)
     {
-        Directory.CreateDirectory(Path.GetDirectoryName(JsonFilePath.CustomerFilePath)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(_filePath)!);
 
         string json = JsonSerializer.Serialize(customers, _options);
-        var tempPath = JsonFilePath.CustomerFilePath + ".temp";
+        var tempPath = _filePath + ".temp";
 
         await File.WriteAllTextAsync(tempPath, json);
-        File.Move(tempPath, JsonFilePath.CustomerFilePath, overwrite: true);
+        File.Move(tempPath, _filePath, overwrite: true);
     }
 
 }
