@@ -13,4 +13,5 @@
     <Platform Solution="*|x86" Project="x86" />
     <Deploy />
   </Project>
+  <Project Path="SupportTicketManagement.Tests/SupportTicketManagement.Tests.csproj" />
 </Solution>
