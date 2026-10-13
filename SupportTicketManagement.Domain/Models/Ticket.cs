@@ -4,30 +4,19 @@ using System.Text.Json.Serialization;
 
 namespace SupportTicketManagement.Domain.Models;
 
-public class Ticket
+public class Ticket(Guid id, string title, string description, TicketPriority priority, Guid customerId)
 {
     private readonly List<TicketComment> _comments = [];
 
-    public Guid Id { get; private set; } 
-    public string Title { get; private set; } 
-    public string Description { get; private set; } 
-    public TicketPriority Priority { get; private set; }
-    public TicketStatus Status { get; private set; }
-    public IReadOnlyList<TicketComment> Comments => _comments; 
-    public Guid CustomerId { get; private set; }
+    public Guid Id { get; private set; } = ValidateId(id);
+    public string Title { get; private set; } = ValidateAndNormalizeTitle(title);
+    public string Description { get; private set; } = ValidateAndNormalizeDescription(description);
+    public TicketPriority Priority { get; private set; } = ValidatePriority(priority);
+    public TicketStatus Status { get; private set; } = TicketStatus.New;
+    public IReadOnlyList<TicketComment> Comments => _comments;
+    public Guid CustomerId { get; private set; } = ValidateId(customerId);
     public Guid? AdminId { get; private set; }
-    public DateTimeOffset CreatedAt { get; init; }
-
-    private Ticket(Guid id, string title, string description, TicketPriority priority, Guid customerId)
-    {
-        Id = ValidateId(id);
-        Title = ValidateAndNormalizeTitle(title);
-        Description = ValidateAndNormalizeDescription(description); 
-        Priority = ValidatePriority(priority);
-        Status = TicketStatus.New;
-        CustomerId = ValidateId(customerId);
-        CreatedAt = DateTimeOffset.UtcNow;
-    }
+    public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
 
     [JsonConstructor]
     private Ticket(Guid id, string title, string description, TicketPriority priority,
