@@ -33,12 +33,19 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 
     public async Task<GetTicketByIdResult> GetTicketByIdAsync(Guid id)
     {
-        var ticket = await ticketRepository.GetById(id);
+        try
+        {
+            var ticket = await ticketRepository.GetById(id);
 
-        if (ticket is null)
-            return new GetTicketByIdResult(false, null, $"Could not find ticket with Id: '{id}'.");
+            if (ticket is null)
+                return new GetTicketByIdResult(false, null, $"Could not find ticket with Id: '{id}'.");
 
-        return new GetTicketByIdResult(true, ticket, null);
+            return new GetTicketByIdResult(true, ticket, null);
+        }
+        catch (Exception ex)
+        {
+            return new GetTicketByIdResult(false, null, $"Could not load ticket: {ex.Message}");
+        }
     }
 
     public async Task<UpdateTicketResult> UpdateTicketAsync(UpdateTicketRequest request)
