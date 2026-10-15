@@ -10,7 +10,38 @@ public class TicketService(ITicketRepository ticketRepository, IAdminService adm
 {
     public async Task<AddTicketResult> AddTicketAsync(AddTicketRequest request)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(request);
+
+        try
+        {
+            var customerResult =
+                await customerService.GetCustomerByIdAsync(request.CustomerId);
+
+            if (!customerResult.Succeeded)
+            {
+                return new AddTicketResult(
+                    false,
+                    null,
+                    customerResult.ErrorMessage);
+            }
+
+            var ticket = new Ticket(
+                Guid.NewGuid(),
+                request.Title,
+                request.Description,
+                request.Priority,
+                request.CustomerId);
+
+            bool saved = await ticketRepository.Create(ticket);
+
+            return saved
+                ? new AddTicketResult(true, ticket, null)
+                : new AddTicketResult(false, null, "Unable to create the ticket.");
+        }
+        catch (Exception ex)
+        {
+            return new AddTicketResult(false, null, ex.Message);
+        }
     }
 
     public async Task<GetAllTicketsResult> GetAllTicketsAsync()

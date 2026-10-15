@@ -30,5 +30,12 @@ public partial class MainViewModel(INavigationService navigationService) : Obser
     private void ShowTickets()
     {
         Navigation.Navigate(AppPage.Tickets);
+
+    }
+
+    [RelayCommand]
+    private void ShowTicketRegistration()
+    {
+         Navigation.Navigate(AppPage.TicketRegistration);        
     }
 }

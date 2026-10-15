@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="Views\CustomersView.xaml" />
     <None Remove="Views\OverviewView.xaml" />
+    <None Remove="Views\TicketRegistrationView.xaml" />
     <None Remove="Views\TicketsView.xaml" />
   </ItemGroup>
 
@@ -75,6 +76,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\TicketRegistrationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--
