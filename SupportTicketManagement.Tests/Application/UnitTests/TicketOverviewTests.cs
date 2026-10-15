@@ -67,4 +67,110 @@ public class TicketOverviewTests
             ticket => Assert.Equal(middle.Id, ticket.Id),
             ticket => Assert.Equal(oldest.Id, ticket.Id));
     }
+
+
+    [Theory]
+    [Trait("Category", "Unit")]
+    [InlineData("Printer offline")]
+    [InlineData("PRINTER OFFLINE")]
+    [InlineData("prINT")]
+    public async Task SearchTicketsAsync_Should_MatchTitleIgnoringCase(
+    string searchText)
+    {
+        // Arrange
+        var customer = new Customer(
+            Guid.NewGuid(), "North Office", "contact@north.example");
+
+        var matchingTicket = new Ticket(
+            Guid.NewGuid(), "Printer offline", "Cannot print",
+            TicketPriority.Normal, customer.Id);
+
+        var otherTicket = new Ticket(
+            Guid.NewGuid(), "Email problem", "Cannot send email",
+            TicketPriority.Normal, customer.Id);
+
+        var repository = Substitute.For<ITicketRepository>();
+
+        repository.GetAll().Returns(
+            Task.FromResult(new List<Ticket>
+            {
+            otherTicket, matchingTicket
+            }));
+
+        var customers = Substitute.For<ICustomerService>();
+
+        customers.GetAllCustomersAsync().Returns(
+            Task.FromResult(new GetAllCustomersResult(
+                true, new List<Customer> { customer }, null)));
+
+        var service = new TicketService(
+            repository,
+            Substitute.For<IAdminService>(),
+            customers);
+
+        // Act
+        var result = await service.SearchTicketsAsync(
+            new SearchTicketRequest(searchText, null));
+
+        // Assert
+        Assert.True(result.Succeeded, result.ErrorMessage);
+
+        var foundTicket = Assert.Single(result.Tickets);
+        Assert.Equal(matchingTicket.Id, foundTicket.Id);
+    }
+
+    [Theory]
+    [Trait("Category", "Unit")]
+    [InlineData("North Office")]
+    [InlineData("NORTH OFFICE")]
+    [InlineData("noR")]
+    public async Task SearchTicketsAsync_Should_MatchCustomerNameIgnoringCase(
+    string searchText)
+    {
+        // Arrange
+        var matchingCustomer = new Customer(
+            Guid.NewGuid(), "North Office", "contact@north.example");
+
+        var otherCustomer = new Customer(
+            Guid.NewGuid(), "Sample Store", "contact@store.example");
+
+        var matchingTicket = new Ticket(
+            Guid.NewGuid(), "Printer offline", "Cannot print",
+            TicketPriority.Normal, matchingCustomer.Id);
+
+        var otherTicket = new Ticket(
+            Guid.NewGuid(), "Printer setup", "Configure a printer",
+            TicketPriority.Normal, otherCustomer.Id);
+
+        var repository = Substitute.For<ITicketRepository>();
+
+        repository.GetAll().Returns(
+            Task.FromResult(new List<Ticket>
+            {
+            otherTicket, matchingTicket
+            }));
+
+        var customers = Substitute.For<ICustomerService>();
+
+        customers.GetAllCustomersAsync().Returns(
+            Task.FromResult(new GetAllCustomersResult(
+                true,
+                new List<Customer> { otherCustomer, matchingCustomer },
+                null)));
+
+        var service = new TicketService(
+            repository,
+            Substitute.For<IAdminService>(),
+            customers);
+
+        // Act
+        var result = await service.SearchTicketsAsync(
+            new SearchTicketRequest(searchText, null));
+
+        // Assert
+        Assert.True(result.Succeeded, result.ErrorMessage);
+
+        var foundTicket = Assert.Single(result.Tickets);
+        Assert.Equal(matchingTicket.Id, foundTicket.Id);
+    }
 }
