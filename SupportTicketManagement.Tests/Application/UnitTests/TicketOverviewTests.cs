@@ -179,8 +179,9 @@ public class TicketOverviewTests
     [InlineData(TicketStatus.New)]
     [InlineData(TicketStatus.InProgress)]
     [InlineData(TicketStatus.Solved)]
+    [InlineData(null)]
     public async Task SearchTicketsAsync_Should_ReturnOnlySelectedStatus(
-    TicketStatus selectedStatus)
+    TicketStatus? selectedStatus)
     {
         // Arrange
         var customer = new Customer(
@@ -232,8 +233,19 @@ public class TicketOverviewTests
         // Assert
         Assert.True(result.Succeeded, result.ErrorMessage);
 
-        var foundTicket = Assert.Single(result.Tickets);
-        Assert.Equal(selectedStatus, foundTicket.Status);
+        if (selectedStatus is null)
+        {
+            Assert.Equal(3, result.Tickets.Count);
+
+            Assert.Contains(result.Tickets, t => t.Id == newTicket.Id);
+            Assert.Contains(result.Tickets, t => t.Id == inProgressTicket.Id);
+            Assert.Contains(result.Tickets, t => t.Id == solvedTicket.Id);
+        }
+        else
+        {
+            var foundTicket = Assert.Single(result.Tickets);
+            Assert.Equal(selectedStatus.Value, foundTicket.Status);
+        }
     }
 
     [Theory]
