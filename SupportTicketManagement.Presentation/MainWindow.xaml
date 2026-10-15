@@ -16,7 +16,8 @@
     <NavigationView
         x:Name="AppNavigation"
         PaneTitle="Support Ticket Management"
-        ItemInvoked="AppNavigation_ItemInvoked">
+        ItemInvoked="AppNavigation_ItemInvoked"
+        IsSettingsVisible="False">
 
         <NavigationView.MenuItems>
             <NavigationViewItem
