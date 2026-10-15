@@ -235,4 +235,65 @@ public class TicketOverviewTests
         var foundTicket = Assert.Single(result.Tickets);
         Assert.Equal(selectedStatus, foundTicket.Status);
     }
+
+    [Theory]
+    [Trait("Category", "Unit")]
+    [InlineData("PRINTER")]
+    [InlineData("NORTH")]
+    public async Task SearchTicketsAsync_Should_CombineSearchAndStatusFilter(
+    string searchText)
+    {
+        // Arrange
+        var matchingCustomer = new Customer(
+            Guid.NewGuid(), "North Office", "contact@north.example");
+
+        var otherCustomer = new Customer(
+            Guid.NewGuid(), "Sample Store", "contact@store.example");
+
+        var expectedTicket = new Ticket(
+            Guid.NewGuid(), "Printer setup", "Configure a printer",
+            TicketPriority.Normal, matchingCustomer.Id);
+
+        var wrongStatusTicket = new Ticket(
+            Guid.NewGuid(), "Printer repaired", "Printer works again",
+            TicketPriority.Normal, matchingCustomer.Id);
+
+        wrongStatusTicket.SetAdminId(Guid.NewGuid());
+        wrongStatusTicket.SetStatus(TicketStatus.Solved);
+
+        var unrelatedTicket = new Ticket(
+            Guid.NewGuid(), "Email problem", "Cannot send email",
+            TicketPriority.Normal, otherCustomer.Id);
+
+        var repository = Substitute.For<ITicketRepository>();
+
+        repository.GetAll().Returns(
+            Task.FromResult(new List<Ticket>
+            {
+            wrongStatusTicket, unrelatedTicket, expectedTicket
+            }));
+
+        var customers = Substitute.For<ICustomerService>();
+
+        customers.GetAllCustomersAsync().Returns(
+            Task.FromResult(new GetAllCustomersResult(
+                true,
+                new List<Customer> { matchingCustomer, otherCustomer },
+                null)));
+
+        var service = new TicketService(
+            repository,
+            Substitute.For<IAdminService>(),
+            customers);
+
+        // Act
+        var result = await service.SearchTicketsAsync(
+            new SearchTicketRequest(searchText, TicketStatus.New));
+
+        // Assert
+        Assert.True(result.Succeeded, result.ErrorMessage);
+
+        var foundTicket = Assert.Single(result.Tickets);
+        Assert.Equal(expectedTicket.Id, foundTicket.Id);
+    }
 }
