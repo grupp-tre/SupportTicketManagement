@@ -6,7 +6,8 @@ public enum AppPage
     Customers,
     CreateCustomer,
     Tickets,
-    TicketDetails
-   
-  
+    TicketDetails,
+    TicketRegistration
+
+
 }

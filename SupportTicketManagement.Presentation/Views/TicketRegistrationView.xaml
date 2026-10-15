@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Page
+    x:Class="SupportTicketManagement.Presentation.Views.TicketRegistrationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Padding="28">
+
+        <StackPanel Style="{StaticResource FormPanelStyle}">
+
+            <TextBlock
+                Text="Ticket registration"
+                Style="{StaticResource PageTitleStyle}" />
+
+            <TextBlock
+                Text="Register a new support ticket"
+                Style="{StaticResource SectionTitleStyle}" />
+
+            <TextBox
+                Header="Title *"
+                PlaceholderText="A short title for the ticket"
+                Text="{x:Bind ViewModel.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBox
+                Header="Description *"
+                PlaceholderText="Describe the problem..."
+                Text="{x:Bind ViewModel.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Style="{StaticResource FormTextAreaStyle}" />
+
+            <Grid Style="{StaticResource FormRowStyle}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ComboBox
+                    Grid.Column="0"
+                    Header="Customer *"
+                    PlaceholderText="Select a registered customer..."
+                    ItemsSource="{x:Bind ViewModel.Customers}"
+                    SelectedItem="{x:Bind ViewModel.SelectedCustomer, Mode=TwoWay}"
+                    DisplayMemberPath="Name"
+                    Style="{StaticResource FormComboBoxStyle}" />
+
+                <ComboBox
+                    Grid.Column="1"
+                    Header="Priority"
+                    ItemsSource="{x:Bind ViewModel.Priorities}"
+                    SelectedItem="{x:Bind ViewModel.SelectedPriority, Mode=TwoWay}"
+                    Style="{StaticResource FormComboBoxStyle}" />
+
+            </Grid>
+
+            <TextBlock
+                Text="* Required."
+                Style="{StaticResource MutedTextStyle}" />
+
+            <TextBlock
+                Text="{x:Bind ViewModel.Message, Mode=OneWay}"
+                TextWrapping="Wrap" />
+
+            <StackPanel Style="{StaticResource FormActionsStyle}">
+
+                <Button
+                    Content="Save ticket"
+                    Command="{x:Bind ViewModel.RegisterTicketCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}" />
+
+                <Button
+                    Content="Cancel"
+                    Command="{x:Bind ViewModel.CancelCommand}"
+                    Style="{StaticResource SecondaryButtonStyle}" />
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+
+</Page>

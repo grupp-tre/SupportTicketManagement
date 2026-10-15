@@ -48,6 +48,8 @@ public partial class App : Microsoft.UI.Xaml.Application
         services.AddTransient<TicketsView>();
         services.AddTransient<TicketDetailsViewModel>();
         services.AddTransient<TicketDetailsView>();
+        services.AddTransient<TicketRegistrationViewModel>();
+        services.AddTransient<TicketRegistrationView>();
 
         _services = services.BuildServiceProvider();
     }

@@ -58,6 +58,12 @@ public partial class TicketsViewModel : ObservableObject
     public partial string Message { get; set; } = string.Empty;
 
     [RelayCommand]
+    private void ShowTicketRegistration()
+    {
+        _navigationService.Navigate(AppPage.TicketRegistration);
+    }
+
+    [RelayCommand]
     private async Task LoadTicketsAsync()
     {
         IsLoading = true;

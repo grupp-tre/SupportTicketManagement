@@ -19,7 +19,13 @@ public class JsonFileTicketRepository(string filePath) : ITicketRepository
 
     public async Task<bool> Create(Ticket ticket)
     {
-        throw new NotImplementedException();
+        List<Ticket> tickets = await GetAll();
+
+        tickets.Add(ticket);
+
+        await SaveAll(tickets);
+
+        return true;
     }
 
     public async Task<List<Ticket>> GetAll()

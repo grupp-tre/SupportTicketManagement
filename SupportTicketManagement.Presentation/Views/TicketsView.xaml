@@ -24,7 +24,8 @@
             <Button
                 Content="+ Register ticket"
                 HorizontalAlignment="Right"
-                Style="{StaticResource PrimaryButtonStyle}" />
+                Style="{StaticResource PrimaryButtonStyle}"
+                Command="{x:Bind ViewModel.ShowTicketRegistrationCommand}" />
         </Grid>
 
         <Grid Grid.Row="1" ColumnSpacing="12">
