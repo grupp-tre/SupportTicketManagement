@@ -1,6 +1,7 @@
 ﻿using SupportTicketManagement.Domain.Models;
+using Xunit;
 
-namespace SupportTicketManagement.Tests1.Models;
+namespace SupportTicketManagement.Tests.Models;
 
 public class CustomerTests
 {
