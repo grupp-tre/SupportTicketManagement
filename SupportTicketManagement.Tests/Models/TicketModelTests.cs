@@ -6,6 +6,19 @@ namespace SupportTicketManagement.Tests.Models;
 
 public class TicketModelTests
 {
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData(null)]
+    public void Create_Should_ThrowException_WhenTitleIsEmpty(string? title)
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() =>
+            new Ticket(Guid.NewGuid(), title!, "The printer does not respond.",
+                TicketPriority.Normal, Guid.NewGuid()));
+
+        Assert.Equal("title", exception.ParamName);
+    }
+
     [Fact]
     public void Create_Should_SetStatusToNew_WhenTicketIsValid()
     {
