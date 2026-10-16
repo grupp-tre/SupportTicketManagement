@@ -32,6 +32,14 @@ public partial class TicketsViewModel : ObservableObject
         SelectedStatusOption = StatusOptions[0];
     }
 
+    public void ApplyStatusFilter(TicketStatus status)
+    {
+        SearchText = string.Empty;
+
+        SelectedStatusOption = StatusOptions.First(
+            option => option.Status == status);
+    }
+
     public ObservableCollection<TicketRow> Tickets { get; } = [];
 
     public TicketStatusOption[] StatusOptions { get; } =

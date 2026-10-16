@@ -17,42 +17,57 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <Border 
-                Grid.Column="0"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                Padding="22">
-                <StackPanel Spacing="4">
-                    <TextBlock Text="New"/>
-                    <TextBlock Text="{x:Bind ViewModel.NewCount, Mode=OneWay}"
-                           FontSize="24"/>
-                </StackPanel>
-            </Border>
-            
-            <Border 
-                Grid.Column="1"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                Padding="22">
-                <StackPanel Spacing="4">
-                    <TextBlock Text="In Progress"/>
-                    <TextBlock Text="{x:Bind ViewModel.OngoingCount, Mode=OneWay}"
-                           FontSize="24"/>
-                </StackPanel>
-            </Border>
 
-            <Border 
-                Grid.Column="2"
+            <Button 
+                Grid.Column="0"
+                Command="{x:Bind ViewModel.ShowNewTicketsCommand}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
                 Padding="22">
+
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Solved"/>
-                    <TextBlock Text="{x:Bind ViewModel.SolvedCount, Mode=OneWay}"
-                           FontSize="24"/>
+                    <TextBlock Text="New" />
+                    <TextBlock
+                        Text="{x:Bind ViewModel.NewCount, Mode=OneWay}"
+                        FontSize="24" />
                 </StackPanel>
-            </Border>
+            </Button>
+
+            <Button
+                Grid.Column="1"
+                Command="{x:Bind ViewModel.ShowInProgressTicketsCommand}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Padding="22">
+
+                <StackPanel Spacing="4">
+                    <TextBlock Text="In Progress" />
+                    <TextBlock
+                        Text="{x:Bind ViewModel.OngoingCount, Mode=OneWay}"
+                        FontSize="24" />
+                </StackPanel>
+            </Button>
+            
+            <Button
+                Grid.Column="2"
+                Command="{x:Bind ViewModel.ShowSolvedTicketsCommand}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Padding="22">
+
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Solved" />
+                    <TextBlock
+                        Text="{x:Bind ViewModel.SolvedCount, Mode=OneWay}"
+                        FontSize="24" />
+                </StackPanel>
+            </Button>
         </Grid>
 
         <TextBlock
