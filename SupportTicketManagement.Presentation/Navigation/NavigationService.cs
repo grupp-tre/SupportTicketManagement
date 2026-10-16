@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
+using SupportTicketManagement.Domain.Enums;
 using SupportTicketManagement.Presentation.Views;
 using System;
 
@@ -23,5 +24,14 @@ public partial class NavigationService(IServiceProvider services) : ObservableOb
             AppPage.TicketRegistration => services.GetRequiredService<TicketRegistrationView>(),
             _ => throw new ArgumentOutOfRangeException(nameof(page))
         };
+    }
+
+    public void NavigateToTickets(TicketStatus status)
+    {
+        var page = services.GetRequiredService<TicketsView>();
+
+        page.ViewModel.ApplyStatusFilter(status);
+
+        CurrentPage = page;
     }
 }
