@@ -1,0 +1,20 @@
+[
+  {
+    "Id": "0bd535ae-a8b9-4481-8758-59cf383b5a01",
+    "FirstName": "Alex",
+    "LastName": "Example",
+    "Email": "alex@example.com"
+  },
+  {
+    "Id": "e7333376-418e-454d-8897-1a35cd302b02",
+    "FirstName": "Sam",
+    "LastName": "Example",
+    "Email": "sam@example.com"
+  },
+  {
+    "Id": "799fda1c-b9a2-4da2-8bb0-833485b75903",
+    "FirstName": "Robin",
+    "LastName": "Example",
+    "Email": "robin@example.com"
+  }
+]
