@@ -3,16 +3,29 @@
 A Windows desktop application for managing customers and support tickets.
 Built with C#, .NET 10 and WinUI
 
-## Features
+## Group and responsibilities
 
-- Register customers and support tickets.
-- View ticket details and add comments.
-- Update ticket status and assignment.
-- List tickets with the newest tickets first.
-- Search by full or partial ticket titles and customer names, regardless of letter casing.
-- Filter tickets by status and combine filtering with the search.
-- View counts of new, in-progress and solved tickets.
-- Save application data locally in JSON files.
+| Member | Main responsibility |
+| ------ | ------------------- |
+| Meron | Customer management |
+| Oscar | Ticket registration |
+| Jack | Ticket details, assignment, status changes and comments |
+| Alejandro | Ticket overview, search, status filtering and related tests |
+
+## Features and requirements checklist
+
+- [x] Register customers and support tickets.
+- [x] View ticket details and add comments.
+- [x] Update ticket status and assignment.
+- [x] List tickets with the newest tickets first.
+- [x] Search by full or partial ticket titles and customer names,
+      regardless of letter casing.
+- [x] Filter tickets by status and combine filtering with search.
+- [x] View counts of new, in-progress and solved tickets.
+- [x] Save application data locally in JSON files.
+- [x] Validate required fields and enforce assignment rules.
+- [x] Navigate between the main views, ticket details and back.
+- [x] Pass the required unit and integration tests.
 
 ## Requirements
 
@@ -41,7 +54,8 @@ The sample file contains fictional administrators for demonstration.
 3. Set `SupportTicketManagement.Presentation` as the startup project.
 4. Select the appropriate platform for your computer, normally `x64`.
 5. Select the `SupportTicketManagement.Presentation (Package)` launch profile.
-6. Start the application.
+6. Build the solution using Build > Build solution
+7. Start the application using F5.
 
 ## Using the application
 
@@ -72,6 +86,11 @@ The counts are loaded again when returning to the overview.
 | `SupportTicketManagement.Presentation` | WinUI views, view models and navigation. |
 | `SupportTicketManagement.Tests` | Automated unit and integration tests. |
 
+- Views bind to view models, which call application services.
+- Services coordinate domain logic and use repository interfaces.
+- Infrastructure implements these interfaces to read and write JSON files.
+- Domain models contain the data and business rules.
+
 The presentation layer uses MVVM to separate the views from
 presentation logic. Dependencies are registered in `App.xaml.cs`.
 
@@ -89,6 +108,12 @@ The application uses these files:
 - `tickets.json`
 - `admins.json`
 
+### Using your own sample data
+
+Copy the sample administrators as described in Initial setup.
+Then use the application to register customers and create tickets linked to them. 
+The data is saved in the folder listed above.
+
 ## Run the tests
 
 Open a terminal in the folder containing
@@ -100,7 +125,7 @@ Run all tests:
 dotnet test .\SupportTicketManagement.Tests\SupportTicketManagement.Tests.csproj
 ```
 
-Run only unit tests:
+Run tests tagged as Unit:
 
 ```powershell
 dotnet test .\SupportTicketManagement.Tests\SupportTicketManagement.Tests.csproj --filter "Category=Unit"
@@ -113,3 +138,26 @@ dotnet test .\SupportTicketManagement.Tests\SupportTicketManagement.Tests.csproj
 ```
 
 The test project uses xUnit and NSubstitute.
+
+## Manual verification
+
+The following checks passed using test customers and test tickets:
+
+- [x] Register a customer and create a linked ticket.
+- [x] Open details, assign an administrator, update status and save.
+- [x] Add comments with correct text and timestamps.
+- [x] Verify newest-first sorting, search and combined status filtering.
+- [x] Verify the empty-result message and updated Overview counts.
+- [x] Restart the application and confirm that data and links remain.
+
+## Known limitations
+
+The application is designed for one running instance on a shared Windows computer. 
+Concurrent access from multiple instances is not supported.
+
+No known functional issues were identified during the manual checks. 
+
+## AI Usage
+
+AI assistance was used for explanations, code suggestions and troubleshooting.
+Suggestions were reviewed and checked through builds, manual testing and automated tests.
